@@ -22,7 +22,7 @@ pipeline {
         }
         stage('maven package + junit') {
             steps {
-                sh 'mvn -B -Dmaven.test.failure.ignore=true clean package'
+                sh 'mvn -B -Dmaven.test.failure.ignore=true clean package -P prod'
             }
             post {
                 // If Maven was able to run the tests, even if some of the test
