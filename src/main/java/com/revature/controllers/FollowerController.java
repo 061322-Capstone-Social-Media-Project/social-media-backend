@@ -12,31 +12,41 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.annotations.Authorized;
 import com.revature.keys.FollowerKey;
 import com.revature.models.User;
+import com.revature.services.FollowerService;
 
 @RestController
 public class FollowerController {
+	
+	private FollowerService fs;
+
+	public FollowerController(FollowerService fs) {
+		super();
+		this.fs = fs;
+	}
 
 	@Authorized
 	@GetMapping("/following")
 	public ResponseEntity<Set<User>> getFollowing(@RequestBody User u) {
-		return null;
+		return ResponseEntity.ok(fs.getFollowingByFollower(u));
 	}
 	
 	@Authorized
 	@GetMapping("/followers")
 	public ResponseEntity<Set<User>> getFollowers(@RequestBody User u) {
-		return null;
+		return ResponseEntity.ok(fs.getFollowersByFollowing(u));
 	}
 	
 	@Authorized
 	@PostMapping("/following")
 	public ResponseEntity<String> addFollowing(@RequestBody FollowerKey fk) {
-		return null;
+		fs.addFollowing(fk);
+		return ResponseEntity.ok("Followed");
 	}
 	
 	@Authorized
 	@DeleteMapping("/following")
 	public ResponseEntity<String> removeFollowing(@RequestBody FollowerKey fk) {
-		return null;
+		fs.removeFollowing(fk);
+		return ResponseEntity.ok("Unfollowed");
 	}
 }

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.revature.SocialMediaApplication;
 import com.revature.exceptions.AlreadyFollowingException;
+import com.revature.exceptions.NotFollowingException;
 import com.revature.exceptions.UserNotFoundException;
 import com.revature.keys.FollowerKey;
 import com.revature.models.Follower;
@@ -41,9 +43,9 @@ public class FollowerServiceTests {
 		Set<User> followers = new HashSet<>();
 		followers.add(u2);
 
-		Mockito.when(fr.findFollowersByUser(u1)).thenReturn(followers);
+		Mockito.when(fr.findFollowersByFollowing(u1)).thenReturn(followers);
 
-		Set<User> followersActual = sut.getFollowersByUser(u1);
+		Set<User> followersActual = sut.getFollowersByFollowing(u1);
 
 		assertEquals(followers, followersActual);
 	}
@@ -57,9 +59,9 @@ public class FollowerServiceTests {
 		Set<User> following = new HashSet<>();
 		following.add(u1);
 
-		Mockito.when(fr.findFollowingByUser(u2)).thenReturn(following);
+		Mockito.when(fr.findFollowingByFollower(u2)).thenReturn(following);
 
-		Set<User> followingActual = sut.getFollowingByUser(u2);
+		Set<User> followingActual = sut.getFollowingByFollower(u2);
 
 		assertEquals(following, followingActual);
 	}
@@ -71,7 +73,13 @@ public class FollowerServiceTests {
 
 		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
 		Follower f = new Follower(fk, u3, u1);
-
+		
+		// needs to return null
+//		Mockito.when(fr.findById(fk)).thenReturn(null);
+		
+		Mockito.when(us.getUserById(1)).thenReturn(u1);
+		Mockito.when(us.getUserById(3)).thenReturn(u3);
+		
 		sut.addFollowing(fk);
 
 		Mockito.verify(fr).save(f);
@@ -79,7 +87,6 @@ public class FollowerServiceTests {
 
 	@Test
 	public void addFollowingUserNotExist() {
-
 		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
 		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
 
@@ -99,12 +106,11 @@ public class FollowerServiceTests {
 		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
 		Follower f = new Follower(fk, u3, u1);
 
-		Mockito.when(fr.getReferenceById(fk)).thenReturn(f);
+		Mockito.when(fr.findById(fk)).thenReturn(Optional.of(f));
 
 		assertThrows(AlreadyFollowingException.class, () -> sut.addFollowing(fk));
 	}
 
-	// Mock get ref id
 	@Test
 	public void removeFollowingSuccess() {
 		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
@@ -112,10 +118,25 @@ public class FollowerServiceTests {
 
 		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
 		Follower f = new Follower(fk, u3, u1);
-
+		
+		Mockito.when(fr.findById(fk)).thenReturn(Optional.of(f));
+		
 		sut.removeFollowing(fk);
 
 		Mockito.verify(fr).delete(f);
+	}
+	
+	@Test
+	public void removeFollowingNotFollowing() {
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+
+		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
+		Follower f = new Follower(fk, u3, u1);
+		
+		Mockito.when(fr.findById(fk)).thenThrow(new NotFollowingException());
+
+		assertThrows(NotFollowingException.class, () -> sut.removeFollowing(fk));
 	}
 
 }

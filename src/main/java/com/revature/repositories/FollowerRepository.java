@@ -12,7 +12,7 @@ import com.revature.models.User;
 @Repository
 public interface FollowerRepository extends JpaRepository<Follower, FollowerKey>{
 
-	public Set<User> findFollowersByUser(User u);
+	public Set<User> findFollowersByFollowing(User u);
 	
-	public Set<User> findFollowingByUser(User u);
+	public Set<User> findFollowingByFollower(User u);
 }
