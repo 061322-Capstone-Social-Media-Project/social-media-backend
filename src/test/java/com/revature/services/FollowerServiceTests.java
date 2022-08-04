@@ -75,7 +75,7 @@ public class FollowerServiceTests {
 		Follower f = new Follower(fk, u3, u1);
 		
 		// needs to return null
-//		Mockito.when(fr.findById(fk)).thenReturn(null);
+		Mockito.when(fr.findById(fk)).thenReturn(Optional.empty());
 		
 		Mockito.when(us.getUserById(1)).thenReturn(u1);
 		Mockito.when(us.getUserById(3)).thenReturn(u3);

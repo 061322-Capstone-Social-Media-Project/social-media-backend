@@ -1,8 +1,6 @@
 package com.revature.controllers;
 
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -13,9 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.servlet.http.HttpSession;
-
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -30,8 +25,8 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.SocialMediaApplication;
-import com.revature.advice.AuthAspect;
 import com.revature.exceptions.AlreadyFollowingException;
+import com.revature.exceptions.NotFollowingException;
 import com.revature.keys.FollowerKey;
 import com.revature.models.User;
 import com.revature.services.FollowerService;
@@ -66,10 +61,22 @@ public class FollowerControllerTests {
 		
 		mockMvc.perform(
 				get("/following")
+				.sessionAttr("user", u3)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(u3)))
 			.andExpect(status().isOk())
 			.andExpect(content().json(om.writeValueAsString(following)));
+	}
+	
+	@Test
+	public void getFollowingNotLoggedIn() throws JsonProcessingException, Exception {
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+		
+		mockMvc.perform(
+				get("/following")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(om.writeValueAsString(u3)))
+			.andExpect(status().isUnauthorized());
 	}
 	
 	@Test
@@ -85,10 +92,22 @@ public class FollowerControllerTests {
 		
 		mockMvc.perform(
 				get("/followers")
+				.sessionAttr("user", u1)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(u1)))
 			.andExpect(status().isOk())
 			.andExpect(content().json(om.writeValueAsString(followers)));
+	}
+	
+	@Test
+	public void getFollowersNotLoggedIn() throws JsonProcessingException, Exception {
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+		
+		mockMvc.perform(
+				get("/followers")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(om.writeValueAsString(u3)))
+			.andExpect(status().isUnauthorized());
 	}
 	
 	@Test
@@ -97,6 +116,7 @@ public class FollowerControllerTests {
 		
 		mockMvc.perform(
 				post("/following")
+				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post"))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(fk)))
 			.andExpect(status().isOk());
@@ -105,29 +125,67 @@ public class FollowerControllerTests {
 	}
 	
 	@Test
-	public void addFollowingFailure() throws JsonProcessingException, Exception {
+	public void addFollowingAlreadyFollowing() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		doThrow(new AlreadyFollowingException()).when(fs).addFollowing(fk);
 		
 		mockMvc.perform(
 				post("/following")
+				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post"))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(fk)))
 			.andExpect(status().isBadRequest());	
 	}
 	
 	@Test
-	public void deleteFollowingSuccess() throws JsonProcessingException, Exception {
+	public void addFollowingNotLoggedIn() throws JsonProcessingException, Exception {
+		FollowerKey fk = new FollowerKey(1,3);
+		
+		mockMvc.perform(
+				post("/following")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(om.writeValueAsString(fk)))
+			.andExpect(status().isUnauthorized());
+	}
+	
+	@Test
+	public void removeFollowingSuccess() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		mockMvc.perform(
 				delete("/following")
+				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post"))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(fk)))
 			.andExpect(status().isOk());
 		
 		Mockito.verify(fs).removeFollowing(fk);
 	
+	}
+	
+	@Test
+	public void removeFollowingNotFollowing() throws JsonProcessingException, Exception {
+		FollowerKey fk = new FollowerKey(1,3);
+		
+		doThrow(new NotFollowingException()).when(fs).removeFollowing(fk);
+		
+		mockMvc.perform(
+				delete("/following")
+				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post"))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(om.writeValueAsString(fk)))
+			.andExpect(status().isBadRequest());	
+	}
+	
+	@Test
+	public void removeFollowingNotLoggedIn() throws JsonProcessingException, Exception {
+		FollowerKey fk = new FollowerKey(1,3);
+		
+		mockMvc.perform(
+				delete("/following")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(om.writeValueAsString(fk)))
+			.andExpect(status().isUnauthorized());
 	}
 }
