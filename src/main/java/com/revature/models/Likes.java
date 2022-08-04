@@ -2,6 +2,7 @@ package com.revature.models;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +22,8 @@ public class Likes {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private int user_id;
-	private int post_id;
+    @Column(name="user_id")
+	private int userId;
+    @Column(name="post_id")
+	private int postId;
 }

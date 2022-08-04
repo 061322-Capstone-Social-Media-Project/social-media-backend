@@ -24,6 +24,9 @@ public class LikesService {
 			
 		lr.deleteById(id);
 	}
-	
+	public Likes findLikesByUserIdAndPostId(int user_id, int post_id) {
+		return lr.findLikesByUserIdAndPostId(user_id, post_id);
+		
+	}
 
 }

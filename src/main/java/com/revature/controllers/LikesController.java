@@ -3,6 +3,7 @@ package com.revature.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +38,13 @@ public class LikesController {
 		
 		return ResponseEntity.ok(true);
 	
+	}
+	@GetMapping("/user/{user_id}/post/{post_id}")
+	public ResponseEntity<Likes> findLikesByUserIdAndPostId(@PathVariable("user_id") int user_id,@PathVariable("post_id") int post_id) {
+		System.out.println("test");
+		
+		return ResponseEntity.ok(ls.findLikesByUserIdAndPostId(user_id, post_id));
+		
 	}
 	
 }
