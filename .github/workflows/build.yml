@@ -8,6 +8,8 @@ on:
       - feature-branch-profile
       - feature-branch-notifications
       - pipeline-feature
+      - feature-branch-follow
+      - feature-branch-likes
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
