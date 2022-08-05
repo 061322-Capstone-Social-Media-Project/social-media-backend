@@ -2,6 +2,7 @@ package com.revature.services;
 
 import org.springframework.stereotype.Service;
 
+import com.revature.exceptions.LikeNotFoundException;
 import com.revature.models.Likes;
 import com.revature.repositories.LikesRepository;
 
@@ -20,7 +21,7 @@ public class LikesService {
 	
 		
 	}
-	public void removeLike(int id) {
+	public void removeLike(int id) throws LikeNotFoundException {
 			
 		lr.deleteById(id);
 	}

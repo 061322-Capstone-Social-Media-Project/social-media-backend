@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -28,6 +29,7 @@ public class Post {
 	private String text;
 	private String imageUrl;
 	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="comments_id")
 	private List<Post> comments;
 	@ManyToOne
 	private User author;

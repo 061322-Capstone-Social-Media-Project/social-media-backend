@@ -30,7 +30,9 @@ public class PostController {
     @Authorized
     @GetMapping
     public ResponseEntity<List<Post>> getAllPosts() {
-    	return ResponseEntity.ok(this.postService.getAll());
+//    	return ResponseEntity.ok(this.postService.getAll());
+    	return ResponseEntity.ok(this.postService.getMainPosts());
+
     }
     
     @Authorized
