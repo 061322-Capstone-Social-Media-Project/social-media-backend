@@ -29,4 +29,9 @@ public class LikesService {
 		
 	}
 
+	
+	public Likes findById(int id) {
+		return lr.findLikesById( id);
+		
+	}
 }
