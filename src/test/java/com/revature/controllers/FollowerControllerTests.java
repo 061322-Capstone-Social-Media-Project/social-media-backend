@@ -25,6 +25,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.SocialMediaApplication;
+import com.revature.dtos.UserDTO;
 import com.revature.exceptions.AlreadyFollowingException;
 import com.revature.exceptions.NotFollowingException;
 import com.revature.keys.FollowerKey;
@@ -32,7 +33,7 @@ import com.revature.models.User;
 import com.revature.services.FollowerService;
 
 @SpringBootTest(classes = SocialMediaApplication.class)
-public class FollowerControllerTests {
+class FollowerControllerTests {
 	
 	@MockBean
 	private FollowerService fs;
@@ -44,32 +45,38 @@ public class FollowerControllerTests {
 	private MockMvc mockMvc;
 	
 	@BeforeEach
-	public void setUp() throws Throwable {
+	void setUp() throws Throwable {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 	}
 	
 	@Test
-	public void getFollowing() throws JsonProcessingException, Exception {
+	void getFollowingSuccess() throws JsonProcessingException, Exception {
 		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
-		User u2 = new User(2, "adam@someemail.com", "password", "adam", "harbeck");
 		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
 
 		Set<User> following = new HashSet<>();
 		following.add(u1);
 		
+		Set<UserDTO> fdto = new HashSet<>();
+		following.forEach(u -> {
+			UserDTO f = new UserDTO();
+			f.setId(u.getId());
+			f.setFirstName(u.getFirstName());
+			f.setLastName(u.getLastName());
+			fdto.add(f);
+		});
+		
 		when(fs.getFollowingByFollower(u3)).thenReturn(following);
 		
 		mockMvc.perform(
 				get("/following")
-				.sessionAttr("user", u3)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(om.writeValueAsString(u3)))
+				.sessionAttr("user", u3))
 			.andExpect(status().isOk())
-			.andExpect(content().json(om.writeValueAsString(following)));
+			.andExpect(content().json(om.writeValueAsString(fdto)));
 	}
 	
 	@Test
-	public void getFollowingNotLoggedIn() throws JsonProcessingException, Exception {
+	void getFollowingNotLoggedIn() throws JsonProcessingException, Exception {
 		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
 		
 		mockMvc.perform(
@@ -80,27 +87,35 @@ public class FollowerControllerTests {
 	}
 	
 	@Test
-	public void getFollowers() throws JsonProcessingException, Exception {
+	void getFollowers() throws JsonProcessingException, Exception {
 		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
 		User u2 = new User(2, "adam@someemail.com", "password", "adam", "harbeck");
 		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
 
 		Set<User> followers = new HashSet<>();
 		followers.add(u3);
+		followers.add(u2);
+		
+		Set<UserDTO> fdto = new HashSet<>();
+		followers.forEach(u -> {
+			UserDTO f = new UserDTO();
+			f.setId(u.getId());
+			f.setFirstName(u.getFirstName());
+			f.setLastName(u.getLastName());
+			fdto.add(f);
+		});
 		
 		when(fs.getFollowersByFollowing(u1)).thenReturn(followers);
 		
 		mockMvc.perform(
 				get("/followers")
-				.sessionAttr("user", u1)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(om.writeValueAsString(u1)))
+				.sessionAttr("user", u1))
 			.andExpect(status().isOk())
-			.andExpect(content().json(om.writeValueAsString(followers)));
+			.andExpect(content().json(om.writeValueAsString(fdto)));
 	}
 	
 	@Test
-	public void getFollowersNotLoggedIn() throws JsonProcessingException, Exception {
+	void getFollowersNotLoggedIn() throws JsonProcessingException, Exception {
 		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
 		
 		mockMvc.perform(
@@ -111,7 +126,7 @@ public class FollowerControllerTests {
 	}
 	
 	@Test
-	public void addFollowingSuccess() throws JsonProcessingException, Exception {
+	void addFollowingSuccess() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		mockMvc.perform(
@@ -125,7 +140,7 @@ public class FollowerControllerTests {
 	}
 	
 	@Test
-	public void addFollowingAlreadyFollowing() throws JsonProcessingException, Exception {
+	void addFollowingAlreadyFollowing() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		doThrow(new AlreadyFollowingException()).when(fs).addFollowing(fk);
@@ -139,7 +154,7 @@ public class FollowerControllerTests {
 	}
 	
 	@Test
-	public void addFollowingNotLoggedIn() throws JsonProcessingException, Exception {
+	void addFollowingNotLoggedIn() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		mockMvc.perform(
@@ -150,7 +165,7 @@ public class FollowerControllerTests {
 	}
 	
 	@Test
-	public void removeFollowingSuccess() throws JsonProcessingException, Exception {
+	void removeFollowingSuccess() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		mockMvc.perform(
@@ -165,7 +180,7 @@ public class FollowerControllerTests {
 	}
 	
 	@Test
-	public void removeFollowingNotFollowing() throws JsonProcessingException, Exception {
+	void removeFollowingNotFollowing() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		doThrow(new NotFollowingException()).when(fs).removeFollowing(fk);
@@ -179,7 +194,7 @@ public class FollowerControllerTests {
 	}
 	
 	@Test
-	public void removeFollowingNotLoggedIn() throws JsonProcessingException, Exception {
+	void removeFollowingNotLoggedIn() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		mockMvc.perform(

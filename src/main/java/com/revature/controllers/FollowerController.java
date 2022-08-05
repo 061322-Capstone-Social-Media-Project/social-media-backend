@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.annotations.Authorized;
 import com.revature.dtos.UserDTO;
 import com.revature.keys.FollowerKey;
 import com.revature.models.User;
@@ -27,7 +28,7 @@ public class FollowerController {
 		this.fs = fs;
 	}
 
-//	@Authorized
+	@Authorized
 	@GetMapping("/following")
 	public ResponseEntity<Set<UserDTO>> getFollowing(HttpSession session) {
 		User currentUser = (User) session.getAttribute("user");
@@ -42,7 +43,7 @@ public class FollowerController {
 		return ResponseEntity.ok(fdto);
 	}
 	
-//	@Authorized
+	@Authorized
 	@GetMapping("/followers")
 	public ResponseEntity<Set<UserDTO>> getFollowers(HttpSession session) {
 		User currentUser = (User) session.getAttribute("user");
@@ -57,14 +58,14 @@ public class FollowerController {
 		return ResponseEntity.ok(fdto);
 	}
 	
-//	@Authorized
+	@Authorized
 	@PostMapping("/following")
 	public ResponseEntity<String> addFollowing(@RequestBody FollowerKey fk) {
 		fs.addFollowing(fk);
 		return ResponseEntity.ok("Followed");
 	}
 	
-//	@Authorized
+	@Authorized
 	@DeleteMapping("/following")
 	public ResponseEntity<String> removeFollowing(@RequestBody FollowerKey fk) {
 		fs.removeFollowing(fk);
