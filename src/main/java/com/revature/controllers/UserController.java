@@ -6,9 +6,12 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.services.UserService;
@@ -22,6 +25,13 @@ public class UserController {
 	
 	public UserController(UserService service) {
 		this.userService = service;
+	}
+	
+	@GetMapping("/user-profile")
+	@ResponseBody
+	public Optional<User> getUser(@RequestParam String id) {
+		int idNum = Integer.parseInt(id);
+		return userService.findById(idNum);
 	}
 	
 	@PutMapping("/update")
