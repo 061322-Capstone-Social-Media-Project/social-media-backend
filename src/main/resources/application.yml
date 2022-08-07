@@ -1,9 +1,8 @@
+server:
+  error:
+    include-stacktrace: never
+
 spring:
-  datasource:
-    url: jdbc:postgresql://social-media-rds.ctxmz3xkpwkl.us-east-2.rds.amazonaws.com/postgres
-    username: postgres
-    password: Revature!
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: validate
+  profiles:
+    active:
+      - "@profileActive@"
