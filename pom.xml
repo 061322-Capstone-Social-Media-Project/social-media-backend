@@ -68,6 +68,7 @@
 				<configuration>
 					<excludes>
 						<exclude>**/models/**</exclude>
+						<exclude>**/dtos/**</exclude>
 						<exclude>**/repositories/**</exclude>
 					</excludes>
 				</configuration>
