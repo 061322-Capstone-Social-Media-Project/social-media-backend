@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -66,7 +67,7 @@ class FollowerControllerTests {
 			fdto.add(f);
 		});
 		
-		when(fs.getFollowingByFollower(u3)).thenReturn(following);
+		when(fs.getFollowingByFollower(u3, Pageable.unpaged())).thenReturn(following);
 		
 		mockMvc.perform(
 				get("/following")
@@ -105,7 +106,7 @@ class FollowerControllerTests {
 			fdto.add(f);
 		});
 		
-		when(fs.getFollowersByFollowing(u1)).thenReturn(followers);
+		when(fs.getFollowersByFollowing(u1, Pageable.unpaged())).thenReturn(followers);
 		
 		mockMvc.perform(
 				get("/followers")

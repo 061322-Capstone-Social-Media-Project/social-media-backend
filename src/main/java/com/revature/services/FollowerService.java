@@ -1,8 +1,8 @@
 package com.revature.services;
 
-import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.revature.exceptions.AlreadyFollowingException;
@@ -24,12 +24,12 @@ public class FollowerService {
 		this.us = us;
 	}
 
-	public Set<User> getFollowersByFollowing(User u) {
-		return fr.findFollowersByFollowing(u);
+	public Set<User> getFollowersByFollowing(User u, Pageable p) {
+		return fr.findFollowersByFollowing(u, p).toSet();
 	}
 
-	public Set<User> getFollowingByFollower(User u) {
-		return fr.findFollowingByFollower(u);
+	public Set<User> getFollowingByFollower(User u, Pageable p) {
+		return fr.findFollowingByFollower(u, p).toSet();
 	}
 
 	public void addFollowing(FollowerKey fk) {

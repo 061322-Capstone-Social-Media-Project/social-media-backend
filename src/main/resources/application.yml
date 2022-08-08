@@ -1,7 +1,11 @@
 server:
   error:
     include-stacktrace: never
-
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
 spring:
   profiles:
     active:

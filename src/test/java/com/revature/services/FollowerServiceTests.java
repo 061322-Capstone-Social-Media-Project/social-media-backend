@@ -12,6 +12,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.revature.SocialMediaApplication;
 import com.revature.exceptions.AlreadyFollowingException;
@@ -44,9 +46,9 @@ class FollowerServiceTests {
 		followers.add(u2);
 		followers.add(u3);
 
-		Mockito.when(fr.findFollowersByFollowing(u1)).thenReturn(followers);
+		Mockito.when(fr.findFollowersByFollowing(u1, Pageable.unpaged())).thenReturn((Page<User>) followers);
 
-		Set<User> followersActual = sut.getFollowersByFollowing(u1);
+		Set<User> followersActual = sut.getFollowersByFollowing(u1, Pageable.unpaged());
 
 		assertEquals(followers, followersActual);
 	}
@@ -60,9 +62,10 @@ class FollowerServiceTests {
 		Set<User> following = new HashSet<>();
 		following.add(u1);
 
-		Mockito.when(fr.findFollowingByFollower(u2)).thenReturn(following);
+		Mockito.when(fr.findFollowingByFollower(u2, Pageable.unpaged())).thenReturn((Page<User>) following);
+		
 
-		Set<User> followingActual = sut.getFollowingByFollower(u2);
+		Set<User> followingActual = sut.getFollowingByFollower(u2, Pageable.unpaged());
 
 		assertEquals(following, followingActual);
 	}
