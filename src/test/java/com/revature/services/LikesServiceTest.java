@@ -11,23 +11,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.revature.SocialMediaApplication;
+import com.revature.exceptions.LikeNotFoundException;
 import com.revature.models.Likes;
 import com.revature.repositories.LikesRepository;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.Optional;
+
 
 @SpringBootTest(classes=SocialMediaApplication.class)
 public class LikesServiceTest {
 	@MockBean
 	private LikesRepository likesRepository;
 	
-	@InjectMocks
-	private LikesService lService;
-	
 	@Autowired
-	public LikesServiceTest(LikesRepository likesRepository,LikesService lService) {
-		super();
-		this.likesRepository = likesRepository;
-		this.lService = lService;
-	}
+	private LikesService lService;
 	
 	@Test
 	public void findLikesByUserIdAndPostIdTest() {
@@ -37,8 +36,9 @@ public class LikesServiceTest {
 		likeExpected.setUserId(1);
 		
 		Mockito.when(likesRepository.findLikesByUserIdAndPostId(1, 1)).thenReturn(likeExpected);
-		
-		assertEquals(likeExpected, likeExpected);
+		Likes likesActuaLikes =  lService.findLikesByUserIdAndPostId(1, 1);
+		 
+		assertEquals(likeExpected, likesActuaLikes);
 	}
 	
 	@Test
@@ -49,12 +49,17 @@ public class LikesServiceTest {
 		likeExpected.setPostId(1);
 		likeExpected.setUserId(1);
 		
-		Mockito.when(lService.userLikesPost(likeExpected)).thenReturn(likeExpected);
-		
-		assertEquals(likeExpected, likeExpected);
+		Mockito.when(likesRepository.save(likeExpected)).thenReturn(likeExpected);
+		Likes actualLikes = lService.userLikesPost(likeExpected);
+		assertEquals(likeExpected, actualLikes);
 	}
 
 	
-	
+	@Test
+	public void userLikesPostDeleteTest() throws LikeNotFoundException {
+		
+		Mockito.doThrow(IllegalArgumentException.class).when(likesRepository).deleteById(1);
+		assertThrows(LikeNotFoundException.class, () -> lService.removeLike(1));
+	}
 	
 }

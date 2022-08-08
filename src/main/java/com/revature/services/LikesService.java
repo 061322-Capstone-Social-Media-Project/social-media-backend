@@ -22,9 +22,14 @@ public class LikesService {
 		
 	}
 	public void removeLike(int id) throws LikeNotFoundException {
-			
-		lr.deleteById(id);
+		
+		try {
+			lr.deleteById(id);
+		} catch (Exception e) {
+			throw new LikeNotFoundException();
+		}
 	}
+	
 	public Likes findLikesByUserIdAndPostId(int user_id, int post_id) {
 		return lr.findLikesByUserIdAndPostId(user_id, post_id);
 		
