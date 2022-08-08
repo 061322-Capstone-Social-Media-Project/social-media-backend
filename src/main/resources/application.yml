@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://social-media-rds.ctxmz3xkpwkl.us-east-2.rds.amazonaws.com/postgres
-    username: postgres
-    password: Revature!
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
