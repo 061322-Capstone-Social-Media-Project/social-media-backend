@@ -1,0 +1,8 @@
+server:
+  error:
+    include-stacktrace: never
+
+spring:
+  profiles:
+    active:
+      - "@profileActive@"
