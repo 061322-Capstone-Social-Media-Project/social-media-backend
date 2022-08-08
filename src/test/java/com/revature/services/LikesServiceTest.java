@@ -4,7 +4,6 @@ package com.revature.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,9 +15,6 @@ import com.revature.models.Likes;
 import com.revature.repositories.LikesRepository;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.Optional;
-
 
 @SpringBootTest(classes=SocialMediaApplication.class)
 public class LikesServiceTest {
@@ -54,9 +50,8 @@ public class LikesServiceTest {
 		assertEquals(likeExpected, actualLikes);
 	}
 
-	
 	@Test
-	public void userLikesPostDeleteTest() throws LikeNotFoundException {
+	public void userLikesPostDeleteTest() {
 		
 		Mockito.doThrow(IllegalArgumentException.class).when(likesRepository).deleteById(1);
 		assertThrows(LikeNotFoundException.class, () -> lService.removeLike(1));

@@ -15,12 +15,11 @@ public class LikesService {
 		super();
 		this.lr = lr;
 	}
+
 	public Likes userLikesPost(Likes likes) {
 		return lr.save(likes);
-		
-	
-		
 	}
+
 	public void removeLike(int id) throws LikeNotFoundException {
 		
 		try {
@@ -32,12 +31,10 @@ public class LikesService {
 	
 	public Likes findLikesByUserIdAndPostId(int user_id, int post_id) {
 		return lr.findLikesByUserIdAndPostId(user_id, post_id);
-		
 	}
 
 	
 	public Likes findById(int id) {
 		return lr.findLikesById( id);
-		
 	}
 }

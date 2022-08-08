@@ -22,12 +22,10 @@ import com.revature.services.LikesService;
 public class LikesController {
 	
 	private final LikesService ls;
-	private final LikesRepository lr;
 
-	public LikesController(LikesService ls, LikesRepository lr) {
+	public LikesController(LikesService ls) {
 		super();
 		this.ls = ls;
-		this.lr = lr;
 	}
 
 	@PostMapping
@@ -55,9 +53,7 @@ public class LikesController {
 	
 	@GetMapping("/user/{user_id}/post/{post_id}")
 	public ResponseEntity<Likes> findLikesByUserIdAndPostId(@PathVariable("user_id") int user_id,@PathVariable("post_id") int post_id) {
- 		
 		return ResponseEntity.ok(ls.findLikesByUserIdAndPostId(user_id, post_id));
-		
 	}
 	
 }
