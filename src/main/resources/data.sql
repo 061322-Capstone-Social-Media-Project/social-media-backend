@@ -5,6 +5,13 @@ INSERT INTO users (id, email, password, first_name, last_name) VALUES (
     'Test',
     'User'
 );
+INSERT INTO users (id, email, password, first_name, last_name) VALUES (
+  2,
+  'testuser2@gmail.com',
+  'password',
+  'ab',
+  'cd'
+);
 
 INSERT INTO posts (id, text, image_url, author_id) VALUES (
     10000,
