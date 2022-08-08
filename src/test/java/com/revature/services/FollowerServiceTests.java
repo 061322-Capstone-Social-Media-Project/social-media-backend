@@ -3,7 +3,9 @@ package com.revature.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.revature.SocialMediaApplication;
@@ -38,50 +41,50 @@ class FollowerServiceTests {
 
 	@Test
 	void getFollowersSuccess() {
-		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
-		User u2 = new User(2, "adam@someemail.com", "password", "adam", "harbeck");
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		User u2 = new User(2, "adam@someemail.com", "password", "adam", "harbeck", null, null, null, null, null);
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
-		Set<User> followers = new HashSet<>();
+		List<User> followers = new ArrayList<>();
 		followers.add(u2);
 		followers.add(u3);
 
-		Mockito.when(fr.findFollowersByFollowing(u1, Pageable.unpaged())).thenReturn((Page<User>) followers);
+		Mockito.when(fr.findFollowersByFollowing(u1, Pageable.unpaged())).thenReturn(new PageImpl<>(followers));
 
-		Set<User> followersActual = sut.getFollowersByFollowing(u1, Pageable.unpaged());
+		List<User> followersActual = sut.getFollowersByFollowing(u1, Pageable.unpaged());
 
 		assertEquals(followers, followersActual);
 	}
 
 	@Test
 	void getFollowingSuccess() {
-		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
-		User u2 = new User(2, "adam@someemail.com", "password", "adam", "harbeck");
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		User u2 = new User(2, "adam@someemail.com", "password", "adam", "harbeck", null, null, null, null, null);
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
-		Set<User> following = new HashSet<>();
+		List<User> following = new ArrayList<>();
 		following.add(u1);
 
-		Mockito.when(fr.findFollowingByFollower(u2, Pageable.unpaged())).thenReturn((Page<User>) following);
+		Mockito.when(fr.findFollowingByFollower(u2, Pageable.unpaged())).thenReturn(new PageImpl<>(following));
 		
 
-		Set<User> followingActual = sut.getFollowingByFollower(u2, Pageable.unpaged());
+		List<User> followingActual = sut.getFollowingByFollower(u2, Pageable.unpaged());
 
 		assertEquals(following, followingActual);
 	}
 
 	@Test
 	void addFollowingSuccess() {
-		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
 		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
 		Follower f = new Follower(fk, u3, u1);
 		
 		Mockito.when(fr.findById(fk)).thenReturn(Optional.empty());
 		
-		Mockito.when(us.getUserById(1)).thenReturn(u1);
-		Mockito.when(us.getUserById(3)).thenReturn(u3);
+		Mockito.when(us.findById(1)).thenReturn(Optional.of(u1));
+		Mockito.when(us.findById(3)).thenReturn(Optional.of(u3));
 		
 		sut.addFollowing(fk);
 
@@ -90,20 +93,20 @@ class FollowerServiceTests {
 
 	@Test
 	void addFollowingUserNotExist() {
-		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
 		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
 
-		Mockito.when(us.getUserById(fk.getFollowingId())).thenThrow(new UserNotFoundException());
+		Mockito.when(us.findById(fk.getFollowingId())).thenThrow(new UserNotFoundException());
 
 		assertThrows(UserNotFoundException.class, () -> sut.addFollowing(fk));
 	}
 
 	@Test
 	void addFollowingAlreadyFollowing() {
-		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
 		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
 		Follower f = new Follower(fk, u3, u1);
@@ -115,8 +118,8 @@ class FollowerServiceTests {
 
 	@Test
 	void removeFollowingSuccess() {
-		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
 		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
 		Follower f = new Follower(fk, u3, u1);
@@ -130,8 +133,8 @@ class FollowerServiceTests {
 	
 	@Test
 	void removeFollowingNotFollowing() {
-		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
 		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
 		

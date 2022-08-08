@@ -8,8 +8,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,13 +52,13 @@ class FollowerControllerTests {
 	
 	@Test
 	void getFollowingSuccess() throws JsonProcessingException, Exception {
-		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
-		Set<User> following = new HashSet<>();
+		List<User> following = new ArrayList<>();
 		following.add(u1);
 		
-		Set<UserDTO> fdto = new HashSet<>();
+		List<UserDTO> fdto = new ArrayList<>();
 		following.forEach(u -> {
 			UserDTO f = new UserDTO();
 			f.setId(u.getId());
@@ -78,7 +78,7 @@ class FollowerControllerTests {
 	
 	@Test
 	void getFollowingNotLoggedIn() throws JsonProcessingException, Exception {
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 		
 		mockMvc.perform(
 				get("/following")
@@ -89,15 +89,15 @@ class FollowerControllerTests {
 	
 	@Test
 	void getFollowers() throws JsonProcessingException, Exception {
-		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
-		User u2 = new User(2, "adam@someemail.com", "password", "adam", "harbeck");
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		User u2 = new User(2, "adam@someemail.com", "password", "adam", "harbeck", null, null, null, null, null);
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
-		Set<User> followers = new HashSet<>();
+		List<User> followers = new ArrayList<>();
 		followers.add(u3);
 		followers.add(u2);
 		
-		Set<UserDTO> fdto = new HashSet<>();
+		List<UserDTO> fdto = new ArrayList<>();
 		followers.forEach(u -> {
 			UserDTO f = new UserDTO();
 			f.setId(u.getId());
@@ -117,7 +117,7 @@ class FollowerControllerTests {
 	
 	@Test
 	void getFollowersNotLoggedIn() throws JsonProcessingException, Exception {
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 		
 		mockMvc.perform(
 				get("/followers")
@@ -132,7 +132,7 @@ class FollowerControllerTests {
 		
 		mockMvc.perform(
 				post("/following")
-				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post"))
+				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(fk)))
 			.andExpect(status().isOk());
@@ -148,7 +148,7 @@ class FollowerControllerTests {
 		
 		mockMvc.perform(
 				post("/following")
-				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post"))
+				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(fk)))
 			.andExpect(status().isBadRequest());	
@@ -171,7 +171,7 @@ class FollowerControllerTests {
 		
 		mockMvc.perform(
 				delete("/following")
-				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post"))
+				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(fk)))
 			.andExpect(status().isOk());
@@ -188,7 +188,7 @@ class FollowerControllerTests {
 		
 		mockMvc.perform(
 				delete("/following")
-				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post"))
+				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(fk)))
 			.andExpect(status().isBadRequest());	

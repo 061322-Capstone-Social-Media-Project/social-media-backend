@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,10 +35,16 @@ public class FollowerController {
 	}
 
 	@Authorized
+	@GetMapping(value="/followed", consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<Boolean> isFollowing(@RequestParam("followerId") int followerId, @RequestParam("followingId") int followingId) {
+		return ResponseEntity.ok(fs.isFollowing(new FollowerKey(followerId, followingId)));
+	}
+	
+	@Authorized
 	@GetMapping("/following")
-	public ResponseEntity<Set<UserDTO>> getFollowing(HttpSession session, @RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit) {
+	public ResponseEntity<List<UserDTO>> getFollowing(HttpSession session, @RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit) {
 		User currentUser = (User) session.getAttribute("user");
-		Set<UserDTO> fdto = new HashSet<>();
+		List<UserDTO> fdto = new ArrayList<>();
 		Pageable p;
 		if (limit.isPresent()) {
 			p = PageRequest.of(offset.isPresent() ? offset.get() : 0, limit.get());
@@ -55,9 +63,9 @@ public class FollowerController {
 	
 	@Authorized
 	@GetMapping("/followers")
-	public ResponseEntity<Set<UserDTO>> getFollowers(HttpSession session, @RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit) {
+	public ResponseEntity<List<UserDTO>> getFollowers(HttpSession session, @RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit) {
 		User currentUser = (User) session.getAttribute("user");
-		Set<UserDTO> fdto = new HashSet<>();
+		List<UserDTO> fdto = new ArrayList<>();
 		Pageable p;
 		if (limit.isPresent()) {
 			p = PageRequest.of(offset.isPresent() ? offset.get() : 0, limit.get());
