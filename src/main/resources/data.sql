@@ -25,3 +25,15 @@ INSERT INTO posts (id, text, image_url, author_id) VALUES (
     '',
     1
 ); 
+
+insert into users (id, email, first_name, last_name, password) values (3, 'c@gmail.com', 'Calvin', 'Post', 'password');
+insert into users (id, email, first_name, last_name, password) values (4, 'a@gmail.com', 'Adam', 'Harbeck', 'password');
+insert into users (id, email, first_name, last_name, password) values (5, 's@gmail.com', 'Shouchuang', 'Zhu', 'password');
+
+insert into follower (follower_id, following_id) values (1, 2);
+insert into follower (follower_id, following_id) values (1, 3);
+insert into follower (follower_id, following_id) values (1, 4);
+insert into follower (follower_id, following_id) values (1, 5);
+
+insert into follower (follower_id, following_id) values (4, 1);
+insert into follower (follower_id, following_id) values (5, 1);

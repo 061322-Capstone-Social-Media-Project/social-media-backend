@@ -4,7 +4,10 @@ server:
   servlet:
     session:
       cookie:
-        same-site: none
+        path: /
+        name: JSESSIONID
+        http-only: true
+#        same-site: none
         secure: true
 spring:
   profiles:

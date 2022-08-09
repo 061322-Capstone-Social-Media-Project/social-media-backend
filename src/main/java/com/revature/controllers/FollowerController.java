@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,9 +36,9 @@ public class FollowerController {
 	}
 
 	@Authorized
-	@GetMapping(value="/followed", consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ResponseEntity<Boolean> isFollowing(@RequestParam("followerId") int followerId, @RequestParam("followingId") int followingId) {
-		return ResponseEntity.ok(fs.isFollowing(new FollowerKey(followerId, followingId)));
+	@PostMapping(value="/followed")
+	public ResponseEntity<Boolean> isFollowing(@RequestBody FollowerKey fk) {
+		return ResponseEntity.ok(fs.isFollowing(fk));
 	}
 	
 	@Authorized
@@ -91,8 +92,8 @@ public class FollowerController {
 	
 	@Authorized
 	@DeleteMapping("/following")
-	public ResponseEntity<String> removeFollowing(@RequestBody FollowerKey fk) {
+	public HttpStatus removeFollowing(@RequestBody FollowerKey fk) {
 		fs.removeFollowing(fk);
-		return ResponseEntity.ok("Unfollowed");
+		return HttpStatus.OK;
 	}
 }
