@@ -12,7 +12,7 @@ import com.revature.SocialMediaApplication;
 import com.revature.repositories.UserRepository;
 
 @SpringBootTest(classes = SocialMediaApplication.class)
-class FollowerServiceTests {
+class UserServiceTests {
 
 	@MockBean
 	private UserRepository ur;
