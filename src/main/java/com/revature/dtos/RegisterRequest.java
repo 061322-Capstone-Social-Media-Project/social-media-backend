@@ -12,4 +12,9 @@ public class RegisterRequest {
     private String password;
     private String firstName;
     private String lastName;
+    private String profilePic;
+    private String username;
+    private String professionalURL;
+    private String location;
+    private String namePronunciation;
 }

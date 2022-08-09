@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.exceptions.AlreadyFollowingException;
 import com.revature.exceptions.NotFollowingException;
+import com.revature.exceptions.UserNotFoundException;
 import com.revature.keys.FollowerKey;
 import com.revature.models.Follower;
 import com.revature.models.User;
@@ -46,12 +47,14 @@ public class FollowerService {
 		if (f != null) {
 			throw new AlreadyFollowingException();
 		}
-//		User follower = us.findById(fk.getFollowerId()).isPresent() ? us.findById(fk.getFollowerId()).get() : null;
-//		User following = us.findById(fk.getFollowingId()).get();
 		
-		User follower = us.getUserById(fk.getFollowerId());
-		User following = us.getUserById(fk.getFollowingId());
-		f = new Follower(fk, follower, following);
+		Optional<User> follower = us.findById(fk.getFollowerId());
+		Optional<User> following = us.findById(fk.getFollowingId());
+		
+		if (follower.isEmpty() || following.isEmpty()) {
+			throw new UserNotFoundException();
+		}
+		f = new Follower(fk, follower.get(), following.get());
 		fr.save(f);
 		
 	}
