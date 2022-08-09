@@ -47,13 +47,12 @@ public class UserController {
 		toUpdate.setPassword(updateRequest.getPassword());
 		toUpdate.setFirstName(updateRequest.getFirstName());
 		toUpdate.setLastName(updateRequest.getLastName());
-		toUpdate.setProfilePic(updateRequest.getProfilePic());
 		toUpdate.setNamePronunciation(updateRequest.getNamePronunciation());
 		toUpdate.setProfessionalURL(updateRequest.getProfessionalURL());
-		
+		toUpdate.setLocation(updateRequest.getLocation());	
 		userService.save(toUpdate);
 		
-		return ResponseEntity.ok(u.get());
+		return ResponseEntity.ok(toUpdate);
 	}
 	
 	
