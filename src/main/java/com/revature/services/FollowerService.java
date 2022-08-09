@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,11 +27,17 @@ public class FollowerService {
 	}
 
 	public List<User> getFollowersByFollowing(User u, Pageable p) {
-		return fr.findFollowersByFollowing(u, p).toList();
+		List<Follower> results = fr.findFollowersByFollowing(u, p).toList();
+		List<User> followers = new ArrayList<>();
+		results.forEach(r -> followers.add(r.getFollower()));
+		return followers;
 	}
 
 	public List<User> getFollowingByFollower(User u, Pageable p) {
-		return fr.findFollowingByFollower(u, p).toList();
+		List<Follower> results = fr.findFollowingByFollower(u, p).toList();
+		List<User> following =new ArrayList<>();
+		results.forEach(r -> following.add(r.getFollowing()));
+		return following;
 	}
 
 	public void addFollowing(FollowerKey fk) {
@@ -39,8 +46,11 @@ public class FollowerService {
 		if (f != null) {
 			throw new AlreadyFollowingException();
 		}
-		User follower = us.findById(fk.getFollowerId()).isPresent() ? us.findById(fk.getFollowerId()).get() : null;
-		User following = us.findById(fk.getFollowingId()).get();
+//		User follower = us.findById(fk.getFollowerId()).isPresent() ? us.findById(fk.getFollowerId()).get() : null;
+//		User following = us.findById(fk.getFollowingId()).get();
+		
+		User follower = us.getUserById(fk.getFollowerId());
+		User following = us.getUserById(fk.getFollowingId());
 		f = new Follower(fk, follower, following);
 		fr.save(f);
 		
