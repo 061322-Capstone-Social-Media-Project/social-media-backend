@@ -31,10 +31,10 @@ public class LikesController {
 	@PostMapping
 	public ResponseEntity<Likes> userLikesPost(@RequestBody Likes likes){
 		Likes checkLikes = ls.findLikesByUserIdAndPostId(likes.getUserId(), likes.getPostId());
-		if(checkLikes != null) {
-			return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(likes);
-		}  
-		return ResponseEntity.ok(this.ls.userLikesPost(likes));
+		
+		return (checkLikes != null) ? 
+				ResponseEntity.status(HttpStatus.BAD_REQUEST).body(likes):
+					ResponseEntity.ok(this.ls.userLikesPost(likes));
 	}
 	
 	@DeleteMapping("/{id}")
@@ -45,10 +45,10 @@ public class LikesController {
 			return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 		}
 		Likes likes = ls.findById(id);
-		if(likes != null) {
-			return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-		}
-		return ResponseEntity.ok(true);
+		
+		return (likes != null) ? 
+				ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false):
+					ResponseEntity.ok(true);
 	}
 	
 	@GetMapping("/user/{user_id}/post/{post_id}")
