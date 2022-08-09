@@ -3,6 +3,10 @@ insert into users
 values 
 ('ftest@gmail.com', 'pass123', 'First', 'Test', 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-512.png', 'ftest', 'http://google.com/', 'Washington, D.C.', 'First Test');
 
+
+
+insert into hobbies (user_id,hobby_1,hobby_2,hobby_3) values ('1', 'Sports', 'Games', 'Fishing');
+
 -- INSERT INTO posts (id, text, image_url, author_id) VALUES (
 --     10000,
 --     'The classic',

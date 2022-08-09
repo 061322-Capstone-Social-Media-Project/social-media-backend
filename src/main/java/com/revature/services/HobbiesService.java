@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -23,5 +24,9 @@ public class HobbiesService {
 	
 	public Hobbies upsert(Hobbies hobbies) {
 		return this.hobbiesRepository.save(hobbies);
+	}
+	
+	public Optional<Hobbies> getById(int id){
+		return this.hobbiesRepository.findById(id);
 	}
 }

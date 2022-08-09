@@ -22,6 +22,6 @@ public class Hobbies {
 	private String hobby2;
 	@Column(name = "hobby_3" )
 	private String hobby3;
-	@ManyToOne
-	private User author;
+	@Column(name = "user_id")
+	private int authorId;
 }
