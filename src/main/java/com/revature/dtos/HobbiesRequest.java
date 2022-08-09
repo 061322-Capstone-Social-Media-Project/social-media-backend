@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class HobbiesRequest {
 
+	private int id;
 	private String hobby1;
 	private String hobby2;
 	private String hobby3;

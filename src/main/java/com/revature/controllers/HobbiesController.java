@@ -1,6 +1,6 @@
 package com.revature.controllers;
 
-import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.annotations.Authorized;
+import com.revature.dtos.HobbiesRequest;
 import com.revature.models.Hobbies;
 import com.revature.services.HobbiesService;
 
 @RestController
 @RequestMapping("/hobby")
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class HobbiesController {
 
 	private final HobbiesService hobbiesService;
@@ -35,8 +35,21 @@ public class HobbiesController {
     }
 	
     @PutMapping
-    public ResponseEntity<Hobbies> upsertHobby(@RequestBody Hobbies hobbies) {
-    	return ResponseEntity.ok(this.hobbiesService.upsert(hobbies));
+    public ResponseEntity<Hobbies> upsertHobby(@RequestBody HobbiesRequest hobbies) {
+    	
+    	Optional<Hobbies> h = hobbiesService.getById(hobbies.getId());
+		
+		if(!h.isPresent()) {
+			return ResponseEntity.badRequest().build();
+		}
+		Hobbies toUpdate = h.get();
+		toUpdate.setHobby1(hobbies.getHobby1());
+		toUpdate.setHobby2(hobbies.getHobby2());
+		toUpdate.setHobby3(hobbies.getHobby3());
+		hobbiesService.upsert(toUpdate);
+		
+		return ResponseEntity.ok(toUpdate);
+    	//return ResponseEntity.ok(this.hobbiesService.upsert(hobbies));
     }
 	
 }

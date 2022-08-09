@@ -19,7 +19,7 @@ import com.revature.dtos.UpdateRequest;
 import com.revature.models.User;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class UserController {
 	private final UserService userService;
 	

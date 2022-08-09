@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.repositories.HobbiesRepsoitory;
 import com.revature.models.Hobbies;
+import com.revature.models.User;
 
 
 @Service
@@ -29,4 +30,5 @@ public class HobbiesService {
 	public Optional<Hobbies> getById(int id){
 		return this.hobbiesRepository.findById(id);
 	}
+	
 }
