@@ -86,9 +86,9 @@ public class FollowerController {
 	
 	@Authorized
 	@PostMapping("/following")
-	public ResponseEntity<String> addFollowing(@RequestBody FollowerKey fk) {
+	public HttpStatus addFollowing(@RequestBody FollowerKey fk) {
 		fs.addFollowing(fk);
-		return ResponseEntity.ok("Followed");
+		return HttpStatus.OK;
 	}
 	
 	@Authorized
