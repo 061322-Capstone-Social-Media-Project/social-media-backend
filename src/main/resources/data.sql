@@ -1,12 +1,10 @@
-INSERT INTO users (id, email, password, first_name, last_name) VALUES (
-    1,
+INSERT INTO users (email, password, first_name, last_name) VALUES (
     'testuser@gmail.com',
     'password',
     'Test',
     'User'
 );
-INSERT INTO users (id, email, password, first_name, last_name) VALUES (
-  2,
+INSERT INTO users (email, password, first_name, last_name) VALUES (
   'testuser2@gmail.com',
   'password',
   'ab',
@@ -26,9 +24,9 @@ INSERT INTO posts (id, text, image_url, author_id) VALUES (
     1
 ); 
 
-insert into users (id, email, first_name, last_name, password) values (3, 'c@gmail.com', 'Calvin', 'Post', 'password');
-insert into users (id, email, first_name, last_name, password) values (4, 'a@gmail.com', 'Adam', 'Harbeck', 'password');
-insert into users (id, email, first_name, last_name, password) values (5, 's@gmail.com', 'Shouchuang', 'Zhu', 'password');
+insert into users (email, first_name, last_name, password) values ('c@gmail.com', 'Calvin', 'Post', 'password');
+insert into users (email, first_name, last_name, password) values ('a@gmail.com', 'Adam', 'Harbeck', 'password');
+insert into users (email, first_name, last_name, password) values ('s@gmail.com', 'Shouchuang', 'Zhu', 'password');
 
 insert into follower (follower_id, following_id) values (1, 2);
 insert into follower (follower_id, following_id) values (1, 3);
