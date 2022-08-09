@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import com.revature.exceptions.UserNotFoundException;
 import com.revature.models.User;
 import com.revature.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,12 @@ public class UserService {
     }
 
     public Optional<User> findByCredentials(String email, String password) {
+    	Optional<User> u = userRepository.findByEmailAndPassword(email, password);
+    	
+    	if (u.isEmpty()) {
+    		throw new UserNotFoundException();
+    	}
+    	
         return userRepository.findByEmailAndPassword(email, password);
     }
     
