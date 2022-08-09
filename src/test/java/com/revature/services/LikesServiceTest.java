@@ -1,24 +1,21 @@
 package com.revature.services;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import com.revature.exceptions.LikeNotFoundException;
+import com.revature.models.Likes;
+import com.revature.repositories.LikesRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.revature.SocialMediaApplication;
-import com.revature.exceptions.LikeNotFoundException;
-import com.revature.models.Likes;
-import com.revature.repositories.LikesRepository;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
 
-@SpringBootTest(classes=SocialMediaApplication.class)
+@SpringBootTest
 public class LikesServiceTest {
+
 	@MockBean
 	private LikesRepository likesRepository;
 	

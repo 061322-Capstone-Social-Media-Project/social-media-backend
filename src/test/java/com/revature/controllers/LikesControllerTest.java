@@ -1,13 +1,8 @@
 package com.revature.controllers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.models.Likes;
+import com.revature.services.LikesService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -15,21 +10,19 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.exceptions.LikeNotFoundException;
-import com.revature.models.Likes;
-import com.revature.services.LikesService;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(LikesController.class)
 public class LikesControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private LikesService likesService;
-
-    @Autowired
-    private LikesController likesController;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -66,17 +59,12 @@ public class LikesControllerTest {
                                 .content(objectMapper.writeValueAsString(likeExpected)))
                 .andExpect(status().isOk());
     }
-    
-	@Test
-	public void deleteByIdExists() throws   Exception {
-        Likes likeExpected = new Likes();
-        likeExpected.setId(1);
-        likeExpected.setPostId(1);
-        likeExpected.setUserId(1);
-        		
-    	mockMvc.perform(
-    			delete("/likes/1"))
-    			.andExpect(status().isOk());
-	}
+
+    @Test
+    public void deleteByIdExists() throws Exception {
+        mockMvc.perform(
+                        delete("/likes/1"))
+                .andExpect(status().isOk());
+    }
 	
 }
