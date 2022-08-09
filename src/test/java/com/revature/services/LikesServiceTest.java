@@ -15,6 +15,7 @@ import com.revature.models.Likes;
 import com.revature.repositories.LikesRepository;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest(classes=SocialMediaApplication.class)
 public class LikesServiceTest {
@@ -39,7 +40,6 @@ public class LikesServiceTest {
 	
 	@Test
 	public void userLikesPostTest() {
-		
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
@@ -52,9 +52,31 @@ public class LikesServiceTest {
 
 	@Test
 	public void userLikesPostDeleteTest() {
-		
 		Mockito.doThrow(IllegalArgumentException.class).when(likesRepository).deleteById(1);
 		assertThrows(LikeNotFoundException.class, () -> lService.removeLike(1));
 	}
+
+	@Test
+	public void userLikesPostDeleteExist() throws LikeNotFoundException {
+		Likes likeExpected = new Likes();
+		likeExpected.setId(1);
+		likeExpected.setPostId(1);
+		likeExpected.setUserId(1);		
+
+		Mockito.doNothing().when(likesRepository).deleteById(1);
+		lService.removeLike(1);
+	}
 	
+	@Test
+	public void findLikesByIdTest() {
+		Likes likeExpected = new Likes();
+		likeExpected.setId(1);
+		likeExpected.setPostId(1);
+		likeExpected.setUserId(1);
+		
+		Mockito.when(likesRepository.findLikesById(1)).thenReturn(likeExpected);
+		Likes likesActuaLikes =  lService.findById(1);
+		 
+		assertEquals(likeExpected, likesActuaLikes);
+	}
 }
