@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.revature.SocialMediaApplication;
-import com.revature.exceptions.UserNotFoundException;
 import com.revature.repositories.UserRepository;
 
 @SpringBootTest(classes = SocialMediaApplication.class)
@@ -26,6 +25,6 @@ class FollowerServiceTests {
 
 		Mockito.doThrow(IllegalArgumentException.class).when(ur).findByEmailAndPassword("doesnt@exist.com", "nopass");
 
-		assertThrows(UserNotFoundException.class, () -> us.findByCredentials("doesnt@exist.com", "nopass"));
+		assertThrows(IllegalArgumentException.class, () -> us.findByCredentials("doesnt@exist.com", "nopass"));
 	}
 }
