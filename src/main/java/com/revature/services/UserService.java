@@ -16,7 +16,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> findByCredentials(String email, String password) throws UserNotFoundException{
+    public Optional<User> findByCredentials(String email, String password) throws UserNotFoundException {
     	Optional<User> u = userRepository.findByEmailAndPassword(email, password);
     	
     	if (u.isEmpty()) {
