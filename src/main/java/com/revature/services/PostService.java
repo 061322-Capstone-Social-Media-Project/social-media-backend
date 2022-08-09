@@ -23,4 +23,8 @@ public class PostService {
 	public Post upsert(Post post) {
 		return this.postRepository.save(post);
 	}
+	
+	public List<Post> getMainPosts() {
+		return this.postRepository.getMainPosts();
+	}
 }
