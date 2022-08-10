@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HobbiesRequest {
+public class HobbyRequest {
 
 	private int id;
 	private String hobby1;

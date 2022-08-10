@@ -4,7 +4,6 @@ package com.revature.controllers;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,32 +12,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.dtos.HobbiesRequest;
+import com.revature.dtos.HobbyRequest;
 import com.revature.models.Hobby;
-import com.revature.services.HobbiesService;
+import com.revature.services.HobbyService;
 
 @RestController
 @RequestMapping("/hobby")
-//@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class HobbyController {
 
-	private final HobbiesService hobbiesService;
+	private final HobbyService hobbyService;
 	
-	public HobbyController(HobbiesService hobbiesService) {
-		this.hobbiesService = hobbiesService;
+	public HobbyController(HobbyService hobbyService) {
+		this.hobbyService = hobbyService;
 	}
 	
     @GetMapping
     public Optional<Hobby> getAllHobbies(@RequestParam String id){
     	int idNum = Integer.parseInt(id);
 		
-		return this.hobbiesService.getByUserId(idNum);
+		return this.hobbyService.getByUserId(idNum);
     }
 	
     @PutMapping
-    public ResponseEntity<Hobby> upsertHobby(@RequestBody HobbiesRequest hobbies) {
+    public ResponseEntity<Hobby> upsertHobby(@RequestBody HobbyRequest hobbies) {
     	
-    	Optional<Hobby> h = hobbiesService.getById(hobbies.getId());
+    	Optional<Hobby> h = hobbyService.getById(hobbies.getId());
 		
 		if(!h.isPresent()) {
 			return ResponseEntity.badRequest().build();
@@ -47,22 +45,21 @@ public class HobbyController {
 		toUpdate.setHobby1(hobbies.getHobby1());
 		toUpdate.setHobby2(hobbies.getHobby2());
 		toUpdate.setHobby3(hobbies.getHobby3());
-		hobbiesService.upsert(toUpdate);
+		hobbyService.upsert(toUpdate);
 		
 		return ResponseEntity.ok(toUpdate);
-    	//return ResponseEntity.ok(this.hobbiesService.upsert(hobbies));
     }
     
     @PostMapping
-    public ResponseEntity<Hobby> createHobbies(@RequestBody HobbiesRequest hobbies){
+    public ResponseEntity<Hobby> createHobby(@RequestBody HobbyRequest hobby){
     	
     	Hobby H = new Hobby();
-    	H.setHobby1(hobbies.getHobby1());
-    	H.setHobby2(hobbies.getHobby2());
-    	H.setHobby3(hobbies.getHobby3());
-    	H.setUserId(hobbies.getUserId());
+    	H.setHobby1(hobby.getHobby1());
+    	H.setHobby2(hobby.getHobby2());
+    	H.setHobby3(hobby.getHobby3());
+    	H.setUserId(hobby.getUserId());
     	
-    	hobbiesService.upsert(H);
+    	hobbyService.upsert(H);
     	
     	return ResponseEntity.ok(H);
     }

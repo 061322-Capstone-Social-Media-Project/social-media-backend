@@ -47,7 +47,7 @@ class HobbiesServiceTests {
 		expected.add(new Hobby(1, "Bike Riding", "Golfing", "Programming", 1));
 		expected.add(new Hobby(2, "Hiking", "Sleeping", "Movies", 2));
 		
-		Mockito.when(((OngoingStubbing) hr.findAll()).thenReturn(expected));
+		Mockito.when(hr.findAll()).thenReturn(expected);
 		
 		List<Hobby> actual = new ArrayList<>();
 		actual = hs.getAll();
