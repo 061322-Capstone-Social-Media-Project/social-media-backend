@@ -1,27 +1,21 @@
 package com.revature.services;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import com.revature.exceptions.LikeNotFoundException;
+import com.revature.models.Likes;
+import com.revature.repositories.LikesRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.revature.SocialMediaApplication;
-import com.revature.exceptions.LikeNotFoundException;
-import com.revature.models.Likes;
-import com.revature.repositories.LikesRepository;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.Optional;
-
-
-@SpringBootTest(classes=SocialMediaApplication.class)
+@SpringBootTest
 public class LikesServiceTest {
+
 	@MockBean
 	private LikesRepository likesRepository;
 	
@@ -43,7 +37,6 @@ public class LikesServiceTest {
 	
 	@Test
 	public void userLikesPostTest() {
-		
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
@@ -54,12 +47,33 @@ public class LikesServiceTest {
 		assertEquals(likeExpected, actualLikes);
 	}
 
-	
 	@Test
-	public void userLikesPostDeleteTest() throws LikeNotFoundException {
-		
+	public void userLikesPostDeleteTest() {
 		Mockito.doThrow(IllegalArgumentException.class).when(likesRepository).deleteById(1);
 		assertThrows(LikeNotFoundException.class, () -> lService.removeLike(1));
 	}
+
+	@Test
+	public void userLikesPostDeleteExist() throws LikeNotFoundException {
+		Likes likeExpected = new Likes();
+		likeExpected.setId(1);
+		likeExpected.setPostId(1);
+		likeExpected.setUserId(1);		
+
+		Mockito.doNothing().when(likesRepository).deleteById(1);
+		lService.removeLike(1);
+	}
 	
+	@Test
+	public void findLikesByIdTest() {
+		Likes likeExpected = new Likes();
+		likeExpected.setId(1);
+		likeExpected.setPostId(1);
+		likeExpected.setUserId(1);
+		
+		Mockito.when(likesRepository.findLikesById(1)).thenReturn(likeExpected);
+		Likes likesActuaLikes =  lService.findById(1);
+		 
+		assertEquals(likeExpected, likesActuaLikes);
+	}
 }
