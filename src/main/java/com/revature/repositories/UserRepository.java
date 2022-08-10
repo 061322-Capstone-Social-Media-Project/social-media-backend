@@ -14,12 +14,19 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByEmailAndPassword(String email, String password);
 
-    @Query(value = "SELECT u FROM User u where (lower(u.lastName) like %:inputString% ) or" +
-            "(lower(u.firstName) like %:inputString%) or" +
-            "(upper(u.firstName) like %:inputString%) or" +
-            "(upper(u.lastName) like %:inputString%) or" +
-            "((u.firstName) like %:inputString%) or" +
-            "((u.firstName) like %:inputString%)")
+//    @Query(value = "SELECT u FROM User u where (lower(u.lastName) like %:inputString% ) or" +
+//            "(lower(u.firstName) like %:inputString%) or" +
+//            "(upper(u.firstName) like %:inputString%) or" +
+//            "(upper(u.lastName) like %:inputString%) or" +
+//            "((u.firstName) like %:inputString%) or" +
+//            "((u.firstName) like %:inputString%)")
+    @Query(value = "Select u from User u where 1=1 and (concat_ws(' ', lower(u.firstName),lower(u.lastName)) like %:inputString%) or" +
+            "(concat_ws(' ', upper(u.firstName), upper(u.lastName)) like %:inputString%) or" +
+            "(concat_ws(' ', u.firstName, u.lastName) like %:inputString%) or" +
+            "(concat(lower(u.firstName), lower(u.lastName)) like %:inputString%) or" +
+            "(concat(upper(u.firstName), upper(u.lastName)) like %:inputString%) or" +
+            "(concat(u.firstName, u.lastName) like %:inputString%)"
+    )
     List<User> findByInputString(@RequestParam String inputString);
 
     Optional<User> findById(int id);
