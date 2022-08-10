@@ -1,42 +1,30 @@
 package com.revature.controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.revature.exceptions.LikeNotFoundException;
 import com.revature.models.Likes;
-import com.revature.repositories.LikesRepository;
 import com.revature.services.LikesService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/likes")
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class LikesController {
 	
 	private final LikesService ls;
-	private final LikesRepository lr;
 
-	public LikesController(LikesService ls, LikesRepository lr) {
+	public LikesController(LikesService ls) {
 		super();
 		this.ls = ls;
-		this.lr = lr;
 	}
 
 	@PostMapping
 	public ResponseEntity<Likes> userLikesPost(@RequestBody Likes likes){
 		Likes checkLikes = ls.findLikesByUserIdAndPostId(likes.getUserId(), likes.getPostId());
-		if(checkLikes != null) {
-			return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(likes);
-		}  
-		return ResponseEntity.ok(this.ls.userLikesPost(likes));
+		
+		return (checkLikes != null) ? 
+				ResponseEntity.status(HttpStatus.BAD_REQUEST).body(likes):
+					ResponseEntity.ok(this.ls.userLikesPost(likes));
 	}
 	
 	@DeleteMapping("/{id}")
@@ -44,20 +32,14 @@ public class LikesController {
 		try {
 			ls.removeLike(id);
 		} catch (LikeNotFoundException e) {
-			return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
-		Likes likes = ls.findById(id);
-		if(likes != null) {
-			return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-		}
-		return ResponseEntity.ok(true);
+		return ResponseEntity.ok().build();
 	}
 	
 	@GetMapping("/user/{user_id}/post/{post_id}")
 	public ResponseEntity<Likes> findLikesByUserIdAndPostId(@PathVariable("user_id") int user_id,@PathVariable("post_id") int post_id) {
- 		
 		return ResponseEntity.ok(ls.findLikesByUserIdAndPostId(user_id, post_id));
-		
 	}
 	
 }
