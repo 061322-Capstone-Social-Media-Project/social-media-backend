@@ -13,4 +13,6 @@ public interface PostRepository extends JpaRepository<Post, Integer>{
 	@Transactional 
 	@Modifying
 	@Query("select p  from  Post  p where comments_id is null") List<Post> getMainPosts();	
+	
+	Post findPostById(int id);
 }

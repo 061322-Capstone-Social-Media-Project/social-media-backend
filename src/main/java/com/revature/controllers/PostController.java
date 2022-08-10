@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,5 +38,11 @@ public class PostController {
     @PutMapping
     public ResponseEntity<Post> upsertPost(@RequestBody Post post) {
     	return ResponseEntity.ok(this.postService.upsert(post));
+    }
+    
+    @Authorized
+    @GetMapping("/{id}")
+    public ResponseEntity<Post> findById(@PathVariable("id") int id) {
+     	return ResponseEntity.ok(this.postService.findById(id));
     }
 }
