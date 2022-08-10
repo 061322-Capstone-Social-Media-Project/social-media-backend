@@ -31,4 +31,8 @@ public class HobbiesService {
 		return this.hobbiesRepository.findById(id);
 	}
 	
+	public Optional<Hobbies> getByUserId(int userId){
+		return this.hobbiesRepository.findByUserId(userId);
+	}
+	
 }

@@ -13,4 +13,5 @@ public class HobbiesRequest {
 	private String hobby1;
 	private String hobby2;
 	private String hobby3;
+	private int userId;
 }

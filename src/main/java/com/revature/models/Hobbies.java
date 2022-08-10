@@ -23,5 +23,5 @@ public class Hobbies {
 	@Column(name = "hobby_3" )
 	private String hobby3;
 	@Column(name = "user_id")
-	private int authorId;
+	private int userId;
 }

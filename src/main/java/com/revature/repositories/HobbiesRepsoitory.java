@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.revature.models.Hobbies;
 public interface HobbiesRepsoitory extends JpaRepository<Hobbies, Integer> {
 	
-	Optional<Hobbies> getById(int id);
+	Optional<Hobbies> findById(int id);
+	Optional<Hobbies> findByUserId(int userId);
 	
 }
