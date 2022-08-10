@@ -14,36 +14,36 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.dtos.HobbiesRequest;
-import com.revature.models.Hobbies;
+import com.revature.models.Hobby;
 import com.revature.services.HobbiesService;
 
 @RestController
 @RequestMapping("/hobby")
 //@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
-public class HobbiesController {
+public class HobbyController {
 
 	private final HobbiesService hobbiesService;
 	
-	public HobbiesController(HobbiesService hobbiesService) {
+	public HobbyController(HobbiesService hobbiesService) {
 		this.hobbiesService = hobbiesService;
 	}
 	
     @GetMapping
-    public Optional<Hobbies> getAllHobbies(@RequestParam String id){
+    public Optional<Hobby> getAllHobbies(@RequestParam String id){
     	int idNum = Integer.parseInt(id);
 		
 		return this.hobbiesService.getByUserId(idNum);
     }
 	
     @PutMapping
-    public ResponseEntity<Hobbies> upsertHobby(@RequestBody HobbiesRequest hobbies) {
+    public ResponseEntity<Hobby> upsertHobby(@RequestBody HobbiesRequest hobbies) {
     	
-    	Optional<Hobbies> h = hobbiesService.getById(hobbies.getId());
+    	Optional<Hobby> h = hobbiesService.getById(hobbies.getId());
 		
 		if(!h.isPresent()) {
 			return ResponseEntity.badRequest().build();
 		}
-		Hobbies toUpdate = h.get();
+		Hobby toUpdate = h.get();
 		toUpdate.setHobby1(hobbies.getHobby1());
 		toUpdate.setHobby2(hobbies.getHobby2());
 		toUpdate.setHobby3(hobbies.getHobby3());
@@ -54,9 +54,9 @@ public class HobbiesController {
     }
     
     @PostMapping
-    public ResponseEntity<Hobbies> createHobbies(@RequestBody HobbiesRequest hobbies){
+    public ResponseEntity<Hobby> createHobbies(@RequestBody HobbiesRequest hobbies){
     	
-    	Hobbies H = new Hobbies();
+    	Hobby H = new Hobby();
     	H.setHobby1(hobbies.getHobby1());
     	H.setHobby2(hobbies.getHobby2());
     	H.setHobby3(hobbies.getHobby3());
