@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.revature.models.Post;
+import com.revature.models.User;
 import com.revature.repositories.PostRepository;
 
 @Service
@@ -32,4 +33,5 @@ public class PostService {
 	public Post findById(int id) {
 		return this.postRepository.findPostById(id);
 	}
+
 }

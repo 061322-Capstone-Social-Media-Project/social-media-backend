@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.annotations.Authorized;
 import com.revature.models.Post;
+import com.revature.services.NotificationService;
 import com.revature.services.PostService;
 
 @RestController
@@ -22,9 +23,11 @@ import com.revature.services.PostService;
 public class PostController {
 
 	private final PostService postService;
+	private final NotificationService ns;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, NotificationService ns) {
         this.postService = postService;
+        this.ns = ns;
     }
     
     @Authorized
@@ -37,6 +40,8 @@ public class PostController {
     @Authorized
     @PutMapping
     public ResponseEntity<Post> upsertPost(@RequestBody Post post) {
+    	 ns.commentNotification(post);
+    
     	return ResponseEntity.ok(this.postService.upsert(post));
     }
     
