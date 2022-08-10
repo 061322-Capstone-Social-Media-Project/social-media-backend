@@ -1,8 +1,10 @@
 package com.revature.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.revature.dtos.SearchRequest;
 import org.springframework.stereotype.Service;
 
 import com.revature.models.User;
@@ -29,8 +31,22 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<User> searchUserByFirstNameOrLastName(String inputString) {
-        return userRepository.findByInputString(inputString);
+    public List<SearchRequest> searchUserByFirstNameOrLastName(String inputString) {
+        List<User> users = userRepository.findByInputString(inputString);
+        List<SearchRequest> userDTO = new ArrayList<>();
+        users.forEach(user -> {
+            SearchRequest s = new SearchRequest();
+            s.setEmail(user.getEmail());
+            s.setFirstName(user.getFirstName());
+            s.setLastName(user.getLastName());
+            s.setProfilePic(user.getProfilePic());
+            s.setUsername(user.getUsername());
+            s.setProfessionalURL(user.getProfessionalURL());
+            s.setLocation(user.getLocation());
+            s.setNamePronunciation(user.getNamePronunciation());
+            userDTO.add(s);
+        });
+        return userDTO;
     }
 
 }
