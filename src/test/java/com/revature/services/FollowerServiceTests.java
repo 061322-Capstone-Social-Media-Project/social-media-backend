@@ -147,5 +147,10 @@ class FollowerServiceTests {
 
 		assertThrows(NotFollowingException.class, () -> sut.removeFollowing(fk));
 	}
+	
+	@Test
+	void countFollowers() {
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+	}
 
 }

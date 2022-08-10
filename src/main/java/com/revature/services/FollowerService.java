@@ -70,4 +70,12 @@ public class FollowerService {
 		Optional<Follower> f = fr.findById(fk);
 		return f.isPresent() ? true : false;
 	}
+	
+	public long countFollowersByUserFollowed(User u) {
+		return fr.countByFollowing(u);
+	}
+	
+	public long countFollowingByUserFollowing(User u) {
+		return fr.countByFollower(u);
+	}
 }

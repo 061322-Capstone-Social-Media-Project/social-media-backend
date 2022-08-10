@@ -15,4 +15,8 @@ public interface FollowerRepository extends JpaRepository<Follower, FollowerKey>
 	public Page<Follower> findFollowersByFollowing(User u, Pageable p);
 	
 	public Page<Follower> findFollowingByFollower(User u, Pageable p);
+	
+	public long countByFollowing(User u);
+	
+	public long countByFollower(User u);
 }
