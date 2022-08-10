@@ -3,6 +3,7 @@ package com.revature.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import com.revature.dtos.SearchRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,8 +55,8 @@ public class UserController {
 	}
 	
 	@GetMapping("/search")
-    public ResponseEntity<List<User>> searchUser(@RequestParam String inputString){
-        return ResponseEntity.ok(userService.searchUserByFirstNameOrLastName(inputString));
+    public ResponseEntity<List<SearchRequest>> searchUser(@RequestParam String user){
+        return ResponseEntity.ok(userService.searchUserByFirstNameOrLastName(user));
     }
 
 }
