@@ -47,7 +47,8 @@ public class UserController {
 		toUpdate.setLastName(updateRequest.getLastName());
 		toUpdate.setNamePronunciation(updateRequest.getNamePronunciation());
 		toUpdate.setProfessionalURL(updateRequest.getProfessionalURL());
-		toUpdate.setLocation(updateRequest.getLocation());	
+		toUpdate.setLocation(updateRequest.getLocation());
+		toUpdate.setProfilePic(updateRequest.getProfilePic());
 		userService.save(toUpdate);
 		
 		return ResponseEntity.ok(toUpdate);
