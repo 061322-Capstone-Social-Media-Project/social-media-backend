@@ -26,7 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.SocialMediaApplication;
-import com.revature.dtos.UserDTO;
+import com.revature.dtos.FollowerRequest;
 import com.revature.exceptions.AlreadyFollowingException;
 import com.revature.exceptions.NotFollowingException;
 import com.revature.keys.FollowerKey;
@@ -58,9 +58,9 @@ class FollowerControllerTests {
 		List<User> following = new ArrayList<>();
 		following.add(u1);
 		
-		List<UserDTO> fdto = new ArrayList<>();
+		List<FollowerRequest> fdto = new ArrayList<>();
 		following.forEach(u -> {
-			UserDTO f = new UserDTO();
+			FollowerRequest f = new FollowerRequest();
 			f.setId(u.getId());
 			f.setFirstName(u.getFirstName());
 			f.setLastName(u.getLastName());
@@ -97,9 +97,9 @@ class FollowerControllerTests {
 		followers.add(u3);
 		followers.add(u2);
 		
-		List<UserDTO> fdto = new ArrayList<>();
+		List<FollowerRequest> fdto = new ArrayList<>();
 		followers.forEach(u -> {
-			UserDTO f = new UserDTO();
+			FollowerRequest f = new FollowerRequest();
 			f.setId(u.getId());
 			f.setFirstName(u.getFirstName());
 			f.setLastName(u.getLastName());

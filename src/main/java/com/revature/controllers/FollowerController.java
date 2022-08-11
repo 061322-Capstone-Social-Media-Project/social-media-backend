@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.annotations.Authorized;
-import com.revature.dtos.UserDTO;
+import com.revature.dtos.FollowerRequest;
+import com.revature.dtos.FollowerRequest;
 import com.revature.keys.FollowerKey;
 import com.revature.services.FollowerService;
 import com.revature.services.UserService;
@@ -45,9 +46,9 @@ public class FollowerController {
 
 	@Authorized
 	@GetMapping("/following/user/{id}")
-	public ResponseEntity<List<UserDTO>> getFollowing(@PathVariable int id, @RequestParam Optional<Integer> offset,
+	public ResponseEntity<List<FollowerRequest>> getFollowing(@PathVariable int id, @RequestParam Optional<Integer> offset,
 			@RequestParam Optional<Integer> limit) {
-		List<UserDTO> fdto = new ArrayList<>();
+		List<FollowerRequest> fdto = new ArrayList<>();
 		Pageable p;
 		if (limit.isPresent()) {
 			p = PageRequest.of(offset.isPresent() ? offset.get() : 0, limit.get());
@@ -55,7 +56,7 @@ public class FollowerController {
 			p = Pageable.unpaged();
 		}
 		fs.getFollowingByFollower(us.findById(id).get(), p).forEach(u -> {
-			UserDTO f = new UserDTO();
+			FollowerRequest f = new FollowerRequest();
 			f.setId(u.getId());
 			f.setFirstName(u.getFirstName());
 			f.setLastName(u.getLastName());
@@ -66,9 +67,9 @@ public class FollowerController {
 
 	@Authorized
 	@GetMapping("/followers/user/{id}")
-	public ResponseEntity<List<UserDTO>> getFollowers(@PathVariable int id, @RequestParam Optional<Integer> offset,
+	public ResponseEntity<List<FollowerRequest>> getFollowers(@PathVariable int id, @RequestParam Optional<Integer> offset,
 			@RequestParam Optional<Integer> limit) {
-		List<UserDTO> fdto = new ArrayList<>();
+		List<FollowerRequest> fdto = new ArrayList<>();
 		Pageable p;
 		if (limit.isPresent()) {
 			p = PageRequest.of(offset.isPresent() ? offset.get() : 0, limit.get());
@@ -76,7 +77,7 @@ public class FollowerController {
 			p = Pageable.unpaged();
 		}
 		fs.getFollowersByFollowing(us.findById(id).get(), p).forEach(u -> {
-			UserDTO f = new UserDTO();
+			FollowerRequest f = new FollowerRequest();
 			f.setId(u.getId());
 			f.setFirstName(u.getFirstName());
 			f.setLastName(u.getLastName());
