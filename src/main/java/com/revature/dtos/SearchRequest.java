@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchRequest {
+	private int id;
     private String email;
     private String firstName;
     private String lastName;

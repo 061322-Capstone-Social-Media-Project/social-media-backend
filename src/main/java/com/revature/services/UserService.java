@@ -36,6 +36,7 @@ public class UserService {
         List<SearchRequest> userDTO = new ArrayList<>();
         users.forEach(user -> {
             SearchRequest s = new SearchRequest();
+            s.setId(user.getId());
             s.setEmail(user.getEmail());
             s.setFirstName(user.getFirstName());
             s.setLastName(user.getLastName());
