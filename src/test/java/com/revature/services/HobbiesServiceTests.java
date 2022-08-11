@@ -40,9 +40,6 @@ class HobbiesServiceTests {
 
 	@Test
 	void getHobbiesSuccess() {
-		User u1 = new User(1, "test1@someemail.com", "password", "test1", "user1", null, null, null, null, null);
-		User u2 = new User(2, "test2@someemail.com", "password", "test2", "user2", null, null, null, null, null);
-
 		List<Hobby> expected = new ArrayList<>();
 		expected.add(new Hobby(1, "Bike Riding", "Golfing", "Programming", 1));
 		expected.add(new Hobby(2, "Hiking", "Sleeping", "Movies", 2));
@@ -57,13 +54,24 @@ class HobbiesServiceTests {
 
 	@Test
 	void getByIdSuccess() {
-
 		Optional<Hobby> expected = Optional.of(new Hobby(1, "Hiking", "Sleeping", "Movies", 1));
 		
 		Mockito.when(hr.findById(1)).thenReturn(expected);
 		
 		Optional<Hobby> actual = Optional.of(new Hobby());
 		actual = hs.getById(1);
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	void getByUserIdSuccess() {
+		Optional<Hobby> expected = Optional.of(new Hobby(1, "Hiking", "Sleeping", "Movies", 1));
+		
+		Mockito.when(hr.findByUserId(1)).thenReturn(expected);
+		
+		Optional<Hobby> actual = Optional.of(new Hobby());
+		actual = hs.getByUserId(1);
 		
 		assertEquals(expected, actual);
 	}
