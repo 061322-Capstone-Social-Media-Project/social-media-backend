@@ -75,4 +75,13 @@ class HobbiesServiceTests {
 		
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	void upsertSuccess() {
+		Hobby h = new Hobby(1, "Hiking", "Sleeping", "Movies", 1);
+		
+		hs.upsert(h);
+
+		Mockito.verify(hr).save(h);
+	}
 }
