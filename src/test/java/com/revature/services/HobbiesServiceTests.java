@@ -55,95 +55,16 @@ class HobbiesServiceTests {
 		assertEquals(expected, actual);
 	}
 
-//	@Test
-//	void getFollowingSuccess() {
-//		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
-//		User u2 = new User(2, "adam@someemail.com", "password", "adam", "harbeck", null, null, null, null, null);
-//		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
-//
-//		List<Follower> following = new ArrayList<>();
-//		following.add(new Follower(new FollowerKey(3, 2), u3, u2));
-//		following.add(new Follower(new FollowerKey(3, 1), u3, u1));
-//		
-//		List<User> expected = new ArrayList<>();
-//		following.forEach(f -> expected.add(f.getFollowing()));
-//		
-//		Mockito.when(fr.findFollowingByFollower(u3, Pageable.unpaged())).thenReturn(new PageImpl<>(following));
-//		
-//
-//		List<User> actual = sut.getFollowingByFollower(u3, Pageable.unpaged());
-//
-//		assertEquals(expected, actual);
-//	}
-//
-//	@Test
-//	void addFollowingSuccess() {
-//		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
-//		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
-//
-//		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
-//		Follower f = new Follower(fk, u3, u1);
-//		
-//		Mockito.when(fr.findById(fk)).thenReturn(Optional.empty());
-//		
-//		Mockito.when(us.findById(1)).thenReturn(Optional.of(u1));
-//		Mockito.when(us.findById(3)).thenReturn(Optional.of(u3));
-//		
-//		sut.addFollowing(fk);
-//
-//		Mockito.verify(fr).save(f);
-//	}
-//
-//	@Test
-//	void addFollowingUserNotExist() {
-//		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
-//		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
-//
-//		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
-//
-//		Mockito.when(us.findById(fk.getFollowingId())).thenThrow(new UserNotFoundException());
-//
-//		assertThrows(UserNotFoundException.class, () -> sut.addFollowing(fk));
-//	}
-//
-//	@Test
-//	void addFollowingAlreadyFollowing() {
-//		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
-//		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
-//
-//		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
-//		Follower f = new Follower(fk, u3, u1);
-//
-//		Mockito.when(fr.findById(fk)).thenReturn(Optional.of(f));
-//
-//		assertThrows(AlreadyFollowingException.class, () -> sut.addFollowing(fk));
-//	}
-//
-//	@Test
-//	void removeFollowingSuccess() {
-//		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
-//		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
-//
-//		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
-//		Follower f = new Follower(fk, u3, u1);
-//		
-//		Mockito.when(fr.findById(fk)).thenReturn(Optional.of(f));
-//		
-//		sut.removeFollowing(fk);
-//
-//		Mockito.verify(fr).delete(f);
-//	}
-//	
-//	@Test
-//	void removeFollowingNotFollowing() {
-//		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
-//		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
-//
-//		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
-//		
-//		Mockito.when(fr.findById(fk)).thenThrow(new NotFollowingException());
-//
-//		assertThrows(NotFollowingException.class, () -> sut.removeFollowing(fk));
-//	}
+	@Test
+	void getByIdSuccess() {
 
+		Optional<Hobby> expected = Optional.of(new Hobby(1, "Hiking", "Sleeping", "Movies", 1));
+		
+		Mockito.when(hr.findById(1)).thenReturn(expected);
+		
+		Optional<Hobby> actual = Optional.of(new Hobby());
+		actual = hs.getById(1);
+		
+		assertEquals(expected, actual);
+	}
 }
