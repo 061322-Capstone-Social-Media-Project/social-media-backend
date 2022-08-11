@@ -53,15 +53,15 @@ public class HobbyController {
     @PostMapping
     public ResponseEntity<Hobby> createHobby(@RequestBody HobbyRequest hobby){
     	
-    	Hobby H = new Hobby();
-    	H.setHobby1(hobby.getHobby1());
-    	H.setHobby2(hobby.getHobby2());
-    	H.setHobby3(hobby.getHobby3());
-    	H.setUserId(hobby.getUserId());
+    	Hobby h = new Hobby();
+    	h.setHobby1(hobby.getHobby1());
+    	h.setHobby2(hobby.getHobby2());
+    	h.setHobby3(hobby.getHobby3());
+    	h.setUserId(hobby.getUserId());
     	
-    	hobbyService.upsert(H);
+    	hobbyService.upsert(h);
     	
-    	return ResponseEntity.ok(H);
+    	return ResponseEntity.ok(h);
     }
 	
 }
