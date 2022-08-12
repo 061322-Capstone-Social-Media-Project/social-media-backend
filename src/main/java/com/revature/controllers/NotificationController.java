@@ -4,6 +4,7 @@ package com.revature.controllers;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.exceptions.LikeNotFoundException;
@@ -54,5 +57,16 @@ public class NotificationController {
 	
 	return ResponseEntity.ok(ns.findNotificationByUserId(id));
 }
+	@PutMapping
+	public ResponseEntity<Boolean> updateNotification(@RequestBody Notification notification){
+		Optional<Notification> n = ns.findANotificationByUserId(notification.getId());
+		if(n.isPresent()) {
+			n.get().setStatus(NotificationStatus.READ);
+			ns.makeNotification(notification);
+			return new ResponseEntity<>(HttpStatus.ACCEPTED);
+			
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
 	
 }

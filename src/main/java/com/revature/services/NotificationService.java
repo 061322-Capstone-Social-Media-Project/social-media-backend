@@ -47,17 +47,28 @@ public class NotificationService {
 
 	}
 
+	public Optional<Notification> findANotificationByUserId(int id) {
+
+		return nr.findById(id);
+
+	}
+	
 	public void likenotification(Likes likes) {
 		Notification notification = new Notification();
 		Post post = ps.findById(likes.getPostId());
-		notification.setNotificationBody("Your post was liked!");
-		notification.setType(NotificationType.POST);
-		notification.setStatus(NotificationStatus.NEW);
-		notification.setUserId(post.getAuthor().getId());
-		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
-		notification.setTimeStamp(timestamp1);
+		Optional<User> u = us.findById(likes.getUserId());
+		if(u.isPresent()) {
+			notification.setNotificationBody(u.get().getFirstName() + " " + u.get().getLastName() + " liked your post!");
+			notification.setType(NotificationType.POST);
+			notification.setStatus(NotificationStatus.NEW);
+			notification.setUserId(post.getAuthor().getId());
+			Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
+			notification.setTimeStamp(timestamp1);
 
-		this.makeNotification(notification);
+			this.makeNotification(notification);
+			
+		}
+
 
 	}
 
@@ -65,7 +76,7 @@ public class NotificationService {
 		List<Post> comments = post.getComments();
 		if (comments.size() > 0) {
 			Notification notification = new Notification();
-			notification.setNotificationBody("Commented on your post!");
+			notification.setNotificationBody("There is a new comment on your post!");
 			notification.setType(NotificationType.POST);
 			notification.setStatus(NotificationStatus.NEW);
 			notification.setUserId(post.getAuthor().getId());
