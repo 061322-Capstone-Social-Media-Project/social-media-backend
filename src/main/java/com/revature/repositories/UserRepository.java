@@ -21,7 +21,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "(concat(upper(u.firstName), upper(u.lastName)) like %:inputString%) or" +
             "(concat(u.firstName, u.lastName) like %:inputString%)"
     )
-    List<User> findByInputString(@RequestParam String inputString);
+    List<User> findByInputString(String inputString);
 
     Optional<User> findById(int id);
 

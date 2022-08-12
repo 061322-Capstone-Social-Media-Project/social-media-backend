@@ -59,7 +59,8 @@ public class HobbyController {
     	h.setHobby3(hobby.getHobby3());
     	h.setUserId(hobby.getUserId());
     	
-    	hobbyService.upsert(h);
+    	h = hobbyService.upsert(h);
+    	
     	
     	return ResponseEntity.ok(h);
     }
