@@ -8,8 +8,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -25,6 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.SocialMediaApplication;
+import com.revature.dtos.SearchRequest;
 import com.revature.exceptions.AlreadyFollowingException;
 import com.revature.exceptions.NotFollowingException;
 import com.revature.keys.FollowerKey;
@@ -32,7 +36,7 @@ import com.revature.models.User;
 import com.revature.services.FollowerService;
 
 @SpringBootTest(classes = SocialMediaApplication.class)
-public class FollowerControllerTests {
+class FollowerControllerTests {
 	
 	@MockBean
 	private FollowerService fs;
@@ -44,33 +48,62 @@ public class FollowerControllerTests {
 	private MockMvc mockMvc;
 	
 	@BeforeEach
-	public void setUp() throws Throwable {
+	void setUp() throws Throwable {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 	}
 	
 	@Test
-	public void getFollowing() throws JsonProcessingException, Exception {
-		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
-		User u2 = new User(2, "adam@someemail.com", "password", "adam", "harbeck");
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+	void isFollowingTrue() throws JsonProcessingException, Exception {
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		FollowerKey fk = new FollowerKey(1, 2);
+		Map<String, Boolean> map = Collections.singletonMap("following", fs.isFollowing(fk));
+		mockMvc.perform(
+				post("/followed")
+				.sessionAttr("user", u1))
+			.andExpect(status().isOk())
+			.andExpect(content().json(om.writeValueAsString(map)));
+	}
+	
+	@Test
+	void isFollowingFalse() {
+		
+	}
+	
+	@Test
+	void getFollowingSuccess() throws JsonProcessingException, Exception {
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
-		Set<User> following = new HashSet<>();
+		List<User> following = new ArrayList<>();
 		following.add(u1);
 		
-		when(fs.getFollowingByFollower(u3)).thenReturn(following);
+		List<SearchRequest> fdto = new ArrayList<>();
+		following.forEach(u -> {
+			SearchRequest f = new SearchRequest();
+			f.setId(u.getId());
+			f.setFirstName(u.getFirstName());
+			f.setLastName(u.getLastName());
+			f.setEmail(u.getEmail());
+			f.setLocation(u.getLocation());
+			f.setNamePronunciation(u.getNamePronunciation());
+			f.setProfessionalURL(u.getProfessionalURL());
+			f.setProfilePic(u.getProfilePic());
+			f.setUsername(u.getUsername());
+			fdto.add(f);
+		});
+		
+		when(fs.getFollowingByFollower(u3, Pageable.unpaged())).thenReturn(following);
 		
 		mockMvc.perform(
 				get("/following")
-				.sessionAttr("user", u3)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(om.writeValueAsString(u3)))
+				.sessionAttr("user", u3))
 			.andExpect(status().isOk())
-			.andExpect(content().json(om.writeValueAsString(following)));
+			.andExpect(content().json(om.writeValueAsString(fdto)));
 	}
 	
 	@Test
-	public void getFollowingNotLoggedIn() throws JsonProcessingException, Exception {
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+	void getFollowingNotLoggedIn() throws JsonProcessingException, Exception {
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 		
 		mockMvc.perform(
 				get("/following")
@@ -80,28 +113,42 @@ public class FollowerControllerTests {
 	}
 	
 	@Test
-	public void getFollowers() throws JsonProcessingException, Exception {
-		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post");
-		User u2 = new User(2, "adam@someemail.com", "password", "adam", "harbeck");
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+	void getFollowers() throws JsonProcessingException, Exception {
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		User u2 = new User(2, "adam@someemail.com", "password", "adam", "harbeck", null, null, null, null, null);
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
-		Set<User> followers = new HashSet<>();
+		List<User> followers = new ArrayList<>();
 		followers.add(u3);
+		followers.add(u2);
 		
-		when(fs.getFollowersByFollowing(u1)).thenReturn(followers);
+		List<SearchRequest> fdto = new ArrayList<>();
+		followers.forEach(u -> {
+			SearchRequest f = new SearchRequest();
+			f.setId(u.getId());
+			f.setFirstName(u.getFirstName());
+			f.setLastName(u.getLastName());
+			f.setEmail(u.getEmail());
+			f.setLocation(u.getLocation());
+			f.setNamePronunciation(u.getNamePronunciation());
+			f.setProfessionalURL(u.getProfessionalURL());
+			f.setProfilePic(u.getProfilePic());
+			f.setUsername(u.getUsername());
+			fdto.add(f);
+		});
+		
+		when(fs.getFollowersByFollowing(u1, Pageable.unpaged())).thenReturn(followers);
 		
 		mockMvc.perform(
 				get("/followers")
-				.sessionAttr("user", u1)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(om.writeValueAsString(u1)))
+				.sessionAttr("user", u1))
 			.andExpect(status().isOk())
-			.andExpect(content().json(om.writeValueAsString(followers)));
+			.andExpect(content().json(om.writeValueAsString(fdto)));
 	}
 	
 	@Test
-	public void getFollowersNotLoggedIn() throws JsonProcessingException, Exception {
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff");
+	void getFollowersNotLoggedIn() throws JsonProcessingException, Exception {
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 		
 		mockMvc.perform(
 				get("/followers")
@@ -111,12 +158,12 @@ public class FollowerControllerTests {
 	}
 	
 	@Test
-	public void addFollowingSuccess() throws JsonProcessingException, Exception {
+	void addFollowingSuccess() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		mockMvc.perform(
 				post("/following")
-				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post"))
+				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(fk)))
 			.andExpect(status().isOk());
@@ -125,21 +172,21 @@ public class FollowerControllerTests {
 	}
 	
 	@Test
-	public void addFollowingAlreadyFollowing() throws JsonProcessingException, Exception {
+	void addFollowingAlreadyFollowing() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		doThrow(new AlreadyFollowingException()).when(fs).addFollowing(fk);
 		
 		mockMvc.perform(
 				post("/following")
-				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post"))
+				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(fk)))
 			.andExpect(status().isBadRequest());	
 	}
 	
 	@Test
-	public void addFollowingNotLoggedIn() throws JsonProcessingException, Exception {
+	void addFollowingNotLoggedIn() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		mockMvc.perform(
@@ -150,12 +197,12 @@ public class FollowerControllerTests {
 	}
 	
 	@Test
-	public void removeFollowingSuccess() throws JsonProcessingException, Exception {
+	void removeFollowingSuccess() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		mockMvc.perform(
 				delete("/following")
-				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post"))
+				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(fk)))
 			.andExpect(status().isOk());
@@ -165,21 +212,21 @@ public class FollowerControllerTests {
 	}
 	
 	@Test
-	public void removeFollowingNotFollowing() throws JsonProcessingException, Exception {
+	void removeFollowingNotFollowing() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		doThrow(new NotFollowingException()).when(fs).removeFollowing(fk);
 		
 		mockMvc.perform(
 				delete("/following")
-				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post"))
+				.sessionAttr("user", new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(fk)))
 			.andExpect(status().isBadRequest());	
 	}
 	
 	@Test
-	public void removeFollowingNotLoggedIn() throws JsonProcessingException, Exception {
+	void removeFollowingNotLoggedIn() throws JsonProcessingException, Exception {
 		FollowerKey fk = new FollowerKey(1,3);
 		
 		mockMvc.perform(

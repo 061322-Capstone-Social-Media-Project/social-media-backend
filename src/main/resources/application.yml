@@ -1,7 +1,14 @@
 server:
   error:
     include-stacktrace: never
-
+  servlet:
+    session:
+      cookie:
+        path: /
+        name: JSESSIONID
+        http-only: true
+#        same-site: none
+        secure: true
 spring:
   profiles:
     active:

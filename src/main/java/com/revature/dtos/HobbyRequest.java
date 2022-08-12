@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class HobbyRequest {
 
 	private int id;
-	private String firstName;
-	private String lastName;
+	private String hobby1;
+	private String hobby2;
+	private String hobby3;
+	private int userId;
 }

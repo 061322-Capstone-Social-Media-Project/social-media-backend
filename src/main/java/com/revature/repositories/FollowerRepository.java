@@ -1,7 +1,7 @@
 package com.revature.repositories;
 
-import java.util.Set;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +11,12 @@ import com.revature.models.User;
 
 @Repository
 public interface FollowerRepository extends JpaRepository<Follower, FollowerKey>{
-
-	public Set<User> findFollowersByFollowing(User u);
 	
-	public Set<User> findFollowingByFollower(User u);
+	public Page<Follower> findFollowersByFollowing(User u, Pageable p);
+	
+	public Page<Follower> findFollowingByFollower(User u, Pageable p);
+	
+	public long countByFollowing(User u);
+	
+	public long countByFollower(User u);
 }
