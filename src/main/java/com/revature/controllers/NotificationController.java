@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.exceptions.LikeNotFoundException;
 import com.revature.models.Likes;
 import com.revature.models.Notification;
+import com.revature.models.NotificationStatus;
 import com.revature.services.NotificationService;
 
 @RestController
@@ -35,7 +36,7 @@ public class NotificationController {
 	public ResponseEntity<Notification> makeNotification(@RequestBody Notification notification){
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 		notification.setTimeStamp(timestamp1);
-		
+
 		 
 		return ResponseEntity.ok(this.ns.makeNotification(notification));
 	}
