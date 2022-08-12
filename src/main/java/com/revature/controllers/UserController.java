@@ -18,7 +18,7 @@ import com.revature.models.User;
 import com.revature.services.UserService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class UserController {
 	private final UserService userService;
 	
@@ -48,7 +48,8 @@ public class UserController {
 		toUpdate.setLastName(updateRequest.getLastName());
 		toUpdate.setNamePronunciation(updateRequest.getNamePronunciation());
 		toUpdate.setProfessionalURL(updateRequest.getProfessionalURL());
-		toUpdate.setLocation(updateRequest.getLocation());	
+		toUpdate.setLocation(updateRequest.getLocation());
+		toUpdate.setProfilePic(updateRequest.getProfilePic());
 		userService.save(toUpdate);
 		
 		return ResponseEntity.ok(toUpdate);
