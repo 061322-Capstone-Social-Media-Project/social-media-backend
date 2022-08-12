@@ -26,7 +26,8 @@ public class UserController {
                 registerRequest.getEmail(),
                 registerRequest.getPassword(),
                 registerRequest.getFirstName(),
-                registerRequest.getLastName());
+                registerRequest.getLastName(),
+                registerRequest.getUsername());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(created));
     }
