@@ -1,10 +1,12 @@
 package com.revature.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.revature.models.Post;
+import com.revature.models.User;
 import com.revature.repositories.PostRepository;
 
 @Service
@@ -27,4 +29,9 @@ public class PostService {
 	public List<Post> getMainPosts() {
 		return this.postRepository.getMainPosts();
 	}
+	
+	public Post findById(int id) {
+		return this.postRepository.findPostById(id);
+	}
+
 }
