@@ -68,7 +68,7 @@ public class FollowerService {
 	
 	public boolean isFollowing(FollowerKey fk) {
 		Optional<Follower> f = fr.findById(fk);
-		return f.isPresent() ? true : false;
+		return f.isPresent();
 	}
 	
 	public long countFollowersByUserFollowed(User u) {

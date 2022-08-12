@@ -9,7 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.SocialMediaApplication;
-import com.revature.dtos.FollowerRequest;
+import com.revature.dtos.SearchRequest;
 import com.revature.exceptions.AlreadyFollowingException;
 import com.revature.exceptions.NotFollowingException;
 import com.revature.keys.FollowerKey;
@@ -51,6 +53,23 @@ class FollowerControllerTests {
 	}
 	
 	@Test
+	void isFollowingTrue() throws JsonProcessingException, Exception {
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		FollowerKey fk = new FollowerKey(1, 2);
+		Map<String, Boolean> map = Collections.singletonMap("following", fs.isFollowing(fk));
+		mockMvc.perform(
+				post("/followed")
+				.sessionAttr("user", u1))
+			.andExpect(status().isOk())
+			.andExpect(content().json(om.writeValueAsString(map)));
+	}
+	
+	@Test
+	void isFollowingFalse() {
+		
+	}
+	
+	@Test
 	void getFollowingSuccess() throws JsonProcessingException, Exception {
 		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
 		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
@@ -58,12 +77,18 @@ class FollowerControllerTests {
 		List<User> following = new ArrayList<>();
 		following.add(u1);
 		
-		List<FollowerRequest> fdto = new ArrayList<>();
+		List<SearchRequest> fdto = new ArrayList<>();
 		following.forEach(u -> {
-			FollowerRequest f = new FollowerRequest();
+			SearchRequest f = new SearchRequest();
 			f.setId(u.getId());
 			f.setFirstName(u.getFirstName());
 			f.setLastName(u.getLastName());
+			f.setEmail(u.getEmail());
+			f.setLocation(u.getLocation());
+			f.setNamePronunciation(u.getNamePronunciation());
+			f.setProfessionalURL(u.getProfessionalURL());
+			f.setProfilePic(u.getProfilePic());
+			f.setUsername(u.getUsername());
 			fdto.add(f);
 		});
 		
@@ -97,12 +122,18 @@ class FollowerControllerTests {
 		followers.add(u3);
 		followers.add(u2);
 		
-		List<FollowerRequest> fdto = new ArrayList<>();
+		List<SearchRequest> fdto = new ArrayList<>();
 		followers.forEach(u -> {
-			FollowerRequest f = new FollowerRequest();
+			SearchRequest f = new SearchRequest();
 			f.setId(u.getId());
 			f.setFirstName(u.getFirstName());
 			f.setLastName(u.getLastName());
+			f.setEmail(u.getEmail());
+			f.setLocation(u.getLocation());
+			f.setNamePronunciation(u.getNamePronunciation());
+			f.setProfessionalURL(u.getProfessionalURL());
+			f.setProfilePic(u.getProfilePic());
+			f.setUsername(u.getUsername());
 			fdto.add(f);
 		});
 		
