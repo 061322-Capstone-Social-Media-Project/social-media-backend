@@ -1,16 +1,15 @@
 package com.revature.services;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.revature.models.Post;
 import com.revature.repositories.PostRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PostService {
 
-	private PostRepository postRepository;
+	private final PostRepository postRepository;
 	
 	public PostService(PostRepository postRepository) {
 		this.postRepository = postRepository;
@@ -25,6 +24,6 @@ public class PostService {
 	}
 	
 	public List<Post> getMainPosts() {
-		return this.postRepository.getMainPosts();
+		return this.postRepository.getPostByCommentsIsNull();
 	}
 }
