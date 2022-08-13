@@ -1,20 +1,13 @@
 package com.revature.services;
 
-import java.net.URI;
+import com.revature.keys.FollowerKey;
+import com.revature.models.*;
+import com.revature.repositories.NotificationRepository;
+import org.springframework.stereotype.Service;
+
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
-import com.revature.keys.FollowerKey;
-import com.revature.models.Likes;
-import com.revature.models.Notification;
-import com.revature.models.NotificationStatus;
-import com.revature.models.NotificationType;
-import com.revature.models.Post;
-import com.revature.models.User;
-import com.revature.repositories.NotificationRepository;
 
 @Service
 public class NotificationService {
@@ -43,7 +36,7 @@ public class NotificationService {
 
 	public List<Notification> findNotificationByUserId(int id) {
 
-		return nr.findNotificationByUserId(id);
+		return nr.findNotificationByUserIdOrderByIdDesc(id);
 
 	}
 
@@ -60,7 +53,7 @@ public class NotificationService {
 		if(u.isPresent()) {
 			notification.setNotificationBody(u.get().getFirstName() + " " + u.get().getLastName() + " liked your post!");
 			notification.setType(NotificationType.POST);
-			notification.setStatus(NotificationStatus.NEW);
+			notification.setStatus(NotificationStatus.UNREAD);
 			notification.setUserId(post.getAuthor().getId());
 			Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 			notification.setTimeStamp(timestamp1);
@@ -78,7 +71,7 @@ public class NotificationService {
 			Notification notification = new Notification();
 			notification.setNotificationBody("There is a new comment on your post!");
 			notification.setType(NotificationType.POST);
-			notification.setStatus(NotificationStatus.NEW);
+			notification.setStatus(NotificationStatus.UNREAD);
 			notification.setUserId(post.getAuthor().getId());
 			Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 			notification.setTimeStamp(timestamp1);
@@ -95,7 +88,7 @@ public class NotificationService {
 		  Notification notification = new Notification(); 
 		  notification.setNotificationBody(u.get().getFirstName() + " " + u.get().getLastName() + " followed you!");
 		  notification.setType(NotificationType.POST);
-		  notification.setStatus(NotificationStatus.NEW);
+		  notification.setStatus(NotificationStatus.UNREAD);
 		  notification.setUserId(fk.getFollowingId());
 		  Timestamp timestamp1 = new Timestamp(System.currentTimeMillis()); notification.setTimeStamp(timestamp1);
 		  this.makeNotification(notification);
