@@ -31,8 +31,7 @@ public class PostController {
     @PutMapping
     public ResponseEntity<Post> upsertPost(@RequestBody Post post) {
     	 ns.commentNotification(post);
-    
-    	return ResponseEntity.ok(this.postService.upsert(post));
+     	 return ResponseEntity.ok(this.postService.upsert(post));
     }
 
 

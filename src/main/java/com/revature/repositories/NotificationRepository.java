@@ -1,14 +1,18 @@
 package com.revature.repositories;
 
-import com.revature.models.Notification;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.revature.models.Notification;
+import com.revature.models.NotificationStatus;
+import com.revature.models.NotificationType;
 
 
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
 
 	List<Notification> findNotificationByUserIdOrderByIdDesc(int id);
-	
+	List<Notification> findNotificationByUserIdAndStatusInOrderByIdDesc(int id, List<NotificationStatus> status);
+
 
 }

@@ -1,13 +1,20 @@
 package com.revature.services;
 
-import com.revature.keys.FollowerKey;
-import com.revature.models.*;
-import com.revature.repositories.NotificationRepository;
-import org.springframework.stereotype.Service;
-
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.revature.keys.FollowerKey;
+import com.revature.models.Likes;
+import com.revature.models.Notification;
+import com.revature.models.NotificationStatus;
+import com.revature.models.NotificationType;
+import com.revature.models.Post;
+import com.revature.models.User;
+import com.revature.repositories.NotificationRepository;
 
 @Service
 public class NotificationService {
@@ -36,8 +43,10 @@ public class NotificationService {
 
 	public List<Notification> findNotificationByUserId(int id) {
 
-		return nr.findNotificationByUserIdOrderByIdDesc(id);
-
+ 		List<NotificationStatus> status = new ArrayList<>();
+		status.add(NotificationStatus.READ);
+		status.add(NotificationStatus.UNREAD);
+    	return nr.findNotificationByUserIdAndStatusInOrderByIdDesc(id, status);
 	}
 
 	public Optional<Notification> findANotificationByUserId(int id) {
@@ -61,15 +70,31 @@ public class NotificationService {
 			this.makeNotification(notification);
 			
 		}
-
-
 	}
-
+	
+	public User  findcommentUser(List<Post> comments) {
+		User u = new User();
+	    for (Post comment : comments) {
+	        if (comment.getId() == 0) {
+	        	u =  comment.getAuthor();
+	        	break;
+	        } else {
+	        	if (comment.getComments().size() > 0) {
+	        		u = findcommentUser(comment.getComments());
+	        	}
+	        }
+	    }
+	    return u;
+		
+	}
+	
 	public void commentNotification(Post post) {
 		List<Post> comments = post.getComments();
 		if (comments.size() > 0) {
+			User u = new User();
 			Notification notification = new Notification();
-			notification.setNotificationBody("There is a new comment on your post!");
+			u = this.findcommentUser(post.getComments());
+			notification.setNotificationBody(u.getFirstName() + " " + u.getLastName() + " commented on your Post!");
 			notification.setType(NotificationType.POST);
 			notification.setStatus(NotificationStatus.UNREAD);
 			notification.setUserId(post.getAuthor().getId());
