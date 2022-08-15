@@ -3,6 +3,7 @@ package com.revature.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.dtos.LoginRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,11 +36,14 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-        return authenticationManager.authenticate(authenticationToken);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            LoginRequest loginRequest = mapper.readValue(request.getInputStream(), LoginRequest.class);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+            return authenticationManager.authenticate(authenticationToken);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
