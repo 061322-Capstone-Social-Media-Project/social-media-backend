@@ -15,7 +15,7 @@ import com.revature.models.User;
 import com.revature.repositories.UserRepository;
 
 @SpringBootTest(classes = SocialMediaApplication.class)
-public class UserServiceTests {
+class UserServiceTests {
 	@MockBean
 	private UserRepository ur;
 	
