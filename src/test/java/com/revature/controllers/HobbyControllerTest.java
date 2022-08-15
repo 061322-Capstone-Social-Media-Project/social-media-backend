@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Optional;
 
 @SpringBootTest(classes = SocialMediaApplication.class)
-public class HobbyControllerTest {
+class HobbyControllerTest {
 	
 	@MockBean
 	private HobbyService hs;
