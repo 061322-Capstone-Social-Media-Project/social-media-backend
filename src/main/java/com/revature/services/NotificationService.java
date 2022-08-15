@@ -15,20 +15,22 @@ import com.revature.models.NotificationType;
 import com.revature.models.Post;
 import com.revature.models.User;
 import com.revature.repositories.NotificationRepository;
+import com.revature.repositories.PostRepository;
 
 @Service
 public class NotificationService {
 
 	private NotificationRepository nr;
 	private final PostService ps;
+	private final PostRepository pr;
 	private final UserService us;
 
-
-	public NotificationService(NotificationRepository nr, PostService ps, UserService us) {
+	public NotificationService(NotificationRepository nr, PostService ps, UserService us, PostRepository pr) {
 		super();
 		this.nr = nr;
 		this.ps = ps;
 		this.us = us;
+		this.pr = pr;
 	}
 
 	public Notification makeNotification(Notification notification) {
@@ -88,19 +90,60 @@ public class NotificationService {
 		
 	}
 	
+	public Post findPostPrimary(int id) {
+		boolean post_check = true;
+		 
+		while(post_check == true) {
+			Post post = pr.findPostById(id);
+			if(post.getCommentsId() ==  null) {
+				post_check = false;
+				return post;
+			} else {
+				id= post.getCommentsId();
+			}  
+		}
+			
+		return null;
+	}
+	
 	public void commentNotification(Post post) {
 		List<Post> comments = post.getComments();
 		if (comments.size() > 0) {
 			User u = new User();
-			Notification notification = new Notification();
+			Post postCheck = pr.findPostById(post.getId());
+
 			u = this.findcommentUser(post.getComments());
-			notification.setNotificationBody(u.getFirstName() + " " + u.getLastName() + " commented on your Post!");
-			notification.setType(NotificationType.POST);
-			notification.setStatus(NotificationStatus.UNREAD);
-			notification.setUserId(post.getAuthor().getId());
-			Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
-			notification.setTimeStamp(timestamp1);
-			this.makeNotification(notification);
+			if(postCheck.getCommentsId() == null) {
+				Notification notification = new Notification();
+ 				notification.setNotificationBody(u.getFirstName() + " " + u.getLastName() + " commented on your Post!");
+				notification.setType(NotificationType.POST);
+				notification.setStatus(NotificationStatus.UNREAD);
+				notification.setUserId(post.getAuthor().getId());
+				Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
+				notification.setTimeStamp(timestamp1);
+				this.makeNotification(notification);
+			} else {
+
+ 				Notification notification = new Notification();
+				 
+				notification.setNotificationBody(u.getFirstName() + " " + u.getLastName() + " replied to your comment!");
+				notification.setType(NotificationType.POST);
+				notification.setStatus(NotificationStatus.UNREAD);
+				notification.setUserId(post.getAuthor().getId());
+				Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
+				notification.setTimeStamp(timestamp1);
+				this.makeNotification(notification);		
+				
+				Notification notificationP = new Notification();
+				notificationP.setNotificationBody(u.getFirstName() + " " + u.getLastName() + "  commented on your Post!");
+				notificationP.setType(NotificationType.POST);
+				notificationP.setStatus(NotificationStatus.UNREAD);
+				Post postPrimaryPost  = this.findPostPrimary(post.getId());
+				notificationP.setUserId(postPrimaryPost.getAuthor().getId());
+				notificationP.setTimeStamp(timestamp1);
+				this.makeNotification(notificationP);
+			}
+
 
 		}
 

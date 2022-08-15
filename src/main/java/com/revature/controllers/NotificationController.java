@@ -56,7 +56,8 @@ public class NotificationController {
 		
 	
 	return ResponseEntity.ok(ns.findNotificationByUserId(id));
-}
+	}
+	
 	@PutMapping
 	public ResponseEntity<Boolean> updateNotification(@RequestBody Notification notification){
 		Optional<Notification> n = ns.findANotificationByUserId(notification.getId());
