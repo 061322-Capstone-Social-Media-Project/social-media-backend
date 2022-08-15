@@ -37,6 +37,10 @@ public class Notification {
 	private NotificationType type;
 	@Column(name="timestamp")
 	private Timestamp timeStamp;
+	@Column(name="status")
+	@Enumerated(EnumType.STRING)
+	private NotificationStatus status;
+
 	
 
 }

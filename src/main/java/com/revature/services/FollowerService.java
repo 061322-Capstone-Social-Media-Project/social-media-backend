@@ -36,45 +36,46 @@ public class FollowerService {
 
 	public List<User> getFollowingByFollower(User u, Pageable p) {
 		List<Follower> results = fr.findFollowingByFollower(u, p).toList();
-		List<User> following =new ArrayList<>();
+		List<User> following = new ArrayList<>();
 		results.forEach(r -> following.add(r.getFollowing()));
 		return following;
 	}
 
 	public void addFollowing(FollowerKey fk) {
-		
-		Follower f = fr.findById(fk).orElse(null);
-		if (f != null) {
+
+		Optional<Follower> f = fr.findById(fk);
+		if (f.isPresent()) {
 			throw new AlreadyFollowingException();
 		}
-		
+
 		Optional<User> follower = us.findById(fk.getFollowerId());
 		Optional<User> following = us.findById(fk.getFollowingId());
-		
+
 		if (follower.isEmpty() || following.isEmpty()) {
 			throw new UserNotFoundException();
 		}
-		f = new Follower(fk, follower.get(), following.get());
-		fr.save(f);
 		
+		fr.save(new Follower(fk, follower.get(), following.get()));
+
 	}
 
 	public void removeFollowing(FollowerKey fk) {
-		
-		Follower f = fr.findById(fk).orElseThrow(NotFollowingException::new);
-		fr.delete(f);
-		
+		Optional<Follower> f = fr.findById(fk);
+		if (f.isEmpty()) {
+			throw new NotFollowingException();
+		}
+		fr.delete(f.get());
 	}
-	
+
 	public boolean isFollowing(FollowerKey fk) {
 		Optional<Follower> f = fr.findById(fk);
 		return f.isPresent();
 	}
-	
+
 	public long countFollowersByUserFollowed(User u) {
 		return fr.countByFollowing(u);
 	}
-	
+
 	public long countFollowingByUserFollowing(User u) {
 		return fr.countByFollower(u);
 	}
