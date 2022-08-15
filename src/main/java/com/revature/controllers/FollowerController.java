@@ -23,6 +23,7 @@ import com.revature.dtos.SearchRequest;
 import com.revature.keys.FollowerKey;
 import com.revature.models.User;
 import com.revature.services.FollowerService;
+import com.revature.services.NotificationService;
 import com.revature.services.UserService;
 
 @RestController
@@ -30,20 +31,23 @@ public class FollowerController {
 
 	private FollowerService fs;
 	private UserService us;
+	private NotificationService ns;
 
-	public FollowerController(FollowerService fs, UserService us) {
+	public FollowerController(FollowerService fs, UserService us, NotificationService ns) {
 		super();
 		this.fs = fs;
 		this.us = us;
+		this.ns = ns;
 	}
 
-	@Authorized
+
 	@PostMapping("/followed")
 	public ResponseEntity<Map<String, Boolean>> isFollowing(@RequestBody FollowerKey fk) {
+
 		return ResponseEntity.ok(Collections.singletonMap("following", fs.isFollowing(fk)));
 	}
 
-	@Authorized
+
 	@GetMapping("/following/user/{id}")
 	public ResponseEntity<List<SearchRequest>> getFollowing(@PathVariable int id,
 			@RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit) {
@@ -73,7 +77,7 @@ public class FollowerController {
 		return ResponseEntity.ok(fdto);
 	}
 
-	@Authorized
+
 	@GetMapping("/followers/user/{id}")
 	public ResponseEntity<List<SearchRequest>> getFollowers(@PathVariable int id,
 			@RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit) {
@@ -103,21 +107,22 @@ public class FollowerController {
 		return ResponseEntity.ok(fdto);
 	}
 
-	@Authorized
+
 	@PostMapping("/following")
 	public HttpStatus addFollowing(@RequestBody FollowerKey fk) {
 		fs.addFollowing(fk);
+		ns.followNotification(fk);
 		return HttpStatus.OK;
 	}
 
-	@Authorized
+
 	@DeleteMapping("/following")
 	public HttpStatus removeFollowing(@RequestBody FollowerKey fk) {
 		fs.removeFollowing(fk);
 		return HttpStatus.OK;
 	}
 
-	@Authorized
+
 	@GetMapping("/followers/user/{id}/count")
 	public ResponseEntity<Map<String, Long>> countFollowers(@PathVariable int id) {
 		Optional<User> user = us.findById(id);
@@ -126,7 +131,7 @@ public class FollowerController {
 				: ResponseEntity.badRequest().build();
 	}
 
-	@Authorized
+
 	@GetMapping("/following/user/{id}/count")
 	public ResponseEntity<Map<String, Long>> countFollowing(@PathVariable int id) {
 		Optional<User> user = us.findById(id);
