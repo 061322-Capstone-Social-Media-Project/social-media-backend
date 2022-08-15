@@ -37,4 +37,8 @@ public class LikesService {
 	public Likes findById(int id) {
 		return lr.findLikesById( id);
 	}
+	public long countLikesByPostId(int postId) {
+		
+		return lr.countLikesByPostId(postId);
+	}
 }

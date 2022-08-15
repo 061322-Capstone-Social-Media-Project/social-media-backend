@@ -13,5 +13,5 @@ public interface LikesRepository extends JpaRepository<Likes, Integer> {
 
 	Likes findLikesById(int id);
 	
-
+	long countLikesByPostId(int postId);
 }

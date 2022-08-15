@@ -42,6 +42,7 @@ public class LikesController {
 		
 		ns.likenotification(likes);
 		
+		
 
 		
 		return (checkLikes != null) ? 
@@ -62,6 +63,14 @@ public class LikesController {
 	@GetMapping("/user/{user_id}/post/{post_id}")
 	public ResponseEntity<Likes> findLikesByUserIdAndPostId(@PathVariable("user_id") int user_id,@PathVariable("post_id") int post_id) {
 		return ResponseEntity.ok(ls.findLikesByUserIdAndPostId(user_id, post_id));
+	}
+	
+	@GetMapping("/count/post/{post_id}")
+	public ResponseEntity<Long> countLikes(@PathVariable("post_id") int post_id){
+		
+		
+		return ResponseEntity.ok(ls.countLikesByPostId(post_id));
+		
 	}
 	
 }
