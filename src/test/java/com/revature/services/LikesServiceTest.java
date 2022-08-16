@@ -60,8 +60,9 @@ class LikesServiceTest {
 		likeExpected.setPostId(1);
 		likeExpected.setUserId(1);		
 
-		Mockito.doNothing().when(likesRepository).deleteById(1);
 		lService.removeLike(1);
+		Mockito.verify(likesRepository).deleteById(1);
+
 	}
 	
 	@Test
