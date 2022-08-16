@@ -1,6 +1,5 @@
 package com.revature.advice;
 
-import com.revature.annotations.AuthRestriction;
 import com.revature.annotations.Authorized;
 import com.revature.exceptions.NotLoggedInException;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -33,17 +32,9 @@ public class AuthAspect {
     // values in the User class.
     // Then this method can be expanded to throw exceptions if the user does
     // not have the matching role.
-    // Example:
-    // User loggedInUser = (User) session.getAttribute("user");
-    // Role userRole = loggedInUser.getRole();
-    // if(authorized.value().equals(AuthRestriction.Manager) && !Role.Manager.equals(userRole)) {
-    //     throw new InvalidRoleException("Must be logged in as a Manager to perform this action");
-    // }
     // Then the RestExceptionHandler class can be expanded to include
     // @ExceptionHandler(InvalidRoleException.class)
     // which should return a 403 Forbidden such as:
-    // String errorMessage = "Missing required role to perform this action";
-    // return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorMessage);
     @Around("@annotation(authorized)")
     public Object authenticate(ProceedingJoinPoint pjp, Authorized authorized) throws Throwable {
 

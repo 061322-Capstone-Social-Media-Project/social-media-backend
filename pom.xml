@@ -68,6 +68,9 @@
 				<configuration>
 					<excludes>
 						<exclude>**/dtos/**</exclude>
+						<exclude>**/exceptions/**</exclude>
+						<exclude>**/advice/**</exclude>
+						<exclude>**/annotations/**</exclude>
 						<exclude>**/keys/**</exclude>
 						<exclude>**/models/**</exclude>
 						<exclude>**/repositories/**</exclude>

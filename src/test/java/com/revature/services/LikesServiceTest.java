@@ -17,7 +17,7 @@ import com.revature.models.Likes;
 import com.revature.repositories.LikesRepository;
 
 @SpringBootTest
-public class LikesServiceTest {
+class LikesServiceTest {
 
 	@MockBean
 	private LikesRepository likesRepository;
@@ -26,7 +26,7 @@ public class LikesServiceTest {
 	private LikesService lService;
 
 	@Test
-	public void findLikesByUserIdAndPostIdTest() {
+	void findLikesByUserIdAndPostIdTest() {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
@@ -39,7 +39,7 @@ public class LikesServiceTest {
 	}
 
 	@Test
-	public void userLikesPostTest() {
+	void userLikesPostTest() {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
@@ -51,24 +51,25 @@ public class LikesServiceTest {
 	}
 
 	@Test
-	public void userLikesPostDeleteTest() {
+	void userLikesPostDeleteTest() {
 		Mockito.doThrow(IllegalArgumentException.class).when(likesRepository).deleteById(1);
 		assertThrows(LikeNotFoundException.class, () -> lService.removeLike(1));
 	}
 
 	@Test
-	public void userLikesPostDeleteExist() throws LikeNotFoundException {
+	void userLikesPostDeleteExist() throws LikeNotFoundException {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
 		likeExpected.setUserId(1);
 
-		Mockito.doNothing().when(likesRepository).deleteById(1);
 		lService.removeLike(1);
+		Mockito.verify(likesRepository).deleteById(1);
+
 	}
 
 	@Test
-	public void findLikesByIdTest() {
+	void findLikesByIdTest() {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);

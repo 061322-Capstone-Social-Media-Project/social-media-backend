@@ -41,6 +41,7 @@ public class UserController {
 			return ResponseEntity.badRequest().build();
 		}
 		User toUpdate = u.get();
+		toUpdate.setId(updateRequest.getId());
 		toUpdate.setEmail(updateRequest.getEmail());
 		toUpdate.setUsername(updateRequest.getUsername());
 		toUpdate.setPassword(updateRequest.getPassword());

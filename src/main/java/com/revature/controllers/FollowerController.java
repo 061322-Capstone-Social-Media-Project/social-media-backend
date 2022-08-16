@@ -73,6 +73,8 @@ public class FollowerController {
 				f.setUsername(u.getUsername());
 				fdto.add(f);
 			});
+		} else {
+			return ResponseEntity.badRequest().build();
 		}
 		return ResponseEntity.ok(fdto);
 	}
@@ -103,6 +105,8 @@ public class FollowerController {
 				f.setUsername(u.getUsername());
 				fdto.add(f);
 			});
+		} else {
+			return ResponseEntity.badRequest().build();
 		}
 		return ResponseEntity.ok(fdto);
 	}

@@ -28,9 +28,9 @@ public class Likes {
     @Column(name="post_id")
 	private int postId;
     
-    @OneToOne(targetEntity=User.class)
-    @MapsId("userId")
-    @JoinColumn(name="user_id")
-    private User liker;
-    
+////    @OneToOne(targetEntity=User.class)
+//    @MapsId("userId")
+//    @JoinColumn(name="user_id")
+//    private User liker;
+//    
 }

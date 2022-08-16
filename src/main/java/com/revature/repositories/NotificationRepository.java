@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.revature.models.Notification;
 import com.revature.models.NotificationStatus;
-import com.revature.models.NotificationType;
 
 
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {

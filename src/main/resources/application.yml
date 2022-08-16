@@ -10,8 +10,6 @@ server:
 #        same-site: none
         secure: true
 spring:
-  h2:
-    console.enabled: true
   profiles:
     active:
       - "@profileActive@"

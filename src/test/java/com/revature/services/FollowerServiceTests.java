@@ -2,6 +2,10 @@ package com.revature.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,24 +90,24 @@ class FollowerServiceTests {
 		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
 		Follower f = new Follower(fk, u3, u1);
 		
-		Mockito.when(fr.findById(fk)).thenReturn(Optional.empty());
+		when(fr.findById(fk)).thenReturn(Optional.empty());
 		
-		Mockito.when(us.findById(1)).thenReturn(Optional.of(u1));
-		Mockito.when(us.findById(3)).thenReturn(Optional.of(u3));
+		when(us.findById(1)).thenReturn(Optional.of(u1));
+		when(us.findById(3)).thenReturn(Optional.of(u3));
 		
 		sut.addFollowing(fk);
 
-		Mockito.verify(fr).save(f);
+		verify(fr).save(f);
 	}
 
 	@Test
 	void addFollowingUserNotExist() {
 		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
-		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
-		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
+		FollowerKey fk = new FollowerKey(5, 1);
 
-		Mockito.when(us.findById(fk.getFollowingId())).thenThrow(new UserNotFoundException());
+		when(us.findById(1)).thenReturn(Optional.of(u1));
+		when(us.findById(5)).thenReturn(Optional.empty());
 
 		assertThrows(UserNotFoundException.class, () -> sut.addFollowing(fk));
 	}
@@ -113,10 +117,10 @@ class FollowerServiceTests {
 		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
 		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
-		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
+		FollowerKey fk = new FollowerKey(3, 1);
 		Follower f = new Follower(fk, u3, u1);
 
-		Mockito.when(fr.findById(fk)).thenReturn(Optional.of(f));
+		when(fr.findById(fk)).thenReturn(Optional.of(f));
 
 		assertThrows(AlreadyFollowingException.class, () -> sut.addFollowing(fk));
 	}
@@ -126,14 +130,14 @@ class FollowerServiceTests {
 		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
 		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
 
-		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
+		FollowerKey fk = new FollowerKey(3, 1);
 		Follower f = new Follower(fk, u3, u1);
 		
-		Mockito.when(fr.findById(fk)).thenReturn(Optional.of(f));
+		when(fr.findById(fk)).thenReturn(Optional.of(f));
 		
 		sut.removeFollowing(fk);
 
-		Mockito.verify(fr).delete(f);
+		verify(fr).delete(f);
 	}
 	
 	@Test
@@ -143,7 +147,7 @@ class FollowerServiceTests {
 
 		FollowerKey fk = new FollowerKey(u3.getId(), u1.getId());
 		
-		Mockito.when(fr.findById(fk)).thenThrow(new NotFollowingException());
+		when(fr.findById(fk)).thenReturn(Optional.empty());
 
 		assertThrows(NotFollowingException.class, () -> sut.removeFollowing(fk));
 	}
@@ -151,6 +155,47 @@ class FollowerServiceTests {
 	@Test
 	void countFollowers() {
 		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		
+		long expected = 5l;
+		
+		when(fr.countByFollowing(u1)).thenReturn(5l);
+		
+		long actual = sut.countFollowersByUserFollowed(u1);
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	void countFollowing() {
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		
+		long expected = 5l;
+		
+		when(fr.countByFollower(u1)).thenReturn(5l);
+		
+		long actual = sut.countFollowingByUserFollowing(u1);
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	void isFollowingTrue() {
+		User u1 = new User(1, "calvin@someemail.com", "password", "calvin", "post", null, null, null, null, null);
+		User u3 = new User(3, "trey@someemail.com", "password", "robert", "ratcliff", null, null, null, null, null);
+		FollowerKey fk = new FollowerKey(1, 3);
+		
+		when(fr.findById(fk)).thenReturn(Optional.of(new Follower(fk, u1, u3)));
+		
+		assertTrue(sut.isFollowing(fk));
+	}
+	
+	@Test
+	void isFollowingFalse() {
+		FollowerKey fk = new FollowerKey(1, 3);
+		
+		when(fr.findById(fk)).thenReturn(Optional.empty());
+		
+		assertFalse(sut.isFollowing(fk));
 	}
 
 }
