@@ -26,7 +26,7 @@ public class Follower {
 	@ManyToOne
 	@MapsId("followerId")
 	@JoinColumn(name="follower_id")
-	User followers;
+	User follower;
 	
 	@ManyToOne
 	@MapsId("followingId")
