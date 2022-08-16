@@ -96,7 +96,6 @@ public class NotificationService {
 		while(postCheck) {
 			Post post = pr.findPostById(id);
 			if(post.getCommentsId() ==  null) {
-				postCheck = false;
 				return post;
 			} else {
 				id= post.getCommentsId();
