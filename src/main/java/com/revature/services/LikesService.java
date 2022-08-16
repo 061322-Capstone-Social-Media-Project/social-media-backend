@@ -29,8 +29,8 @@ public class LikesService {
 		}
 	}
 	
-	public Likes findLikesByUserIdAndPostId(int user_id, int post_id) {
-		return lr.findLikesByUserIdAndPostId(user_id, post_id);
+	public Likes findLikesByUserIdAndPostId(int userId, int postId) {
+		return lr.findLikesByUserIdAndPostId(userId, postId);
 	}
 
 	

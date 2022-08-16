@@ -30,7 +30,7 @@ public class FollowerService {
 	public List<User> getFollowersByFollowing(User u, Pageable p) {
 		List<Follower> results = fr.findFollowersByFollowing(u, p).toList();
 		List<User> followers = new ArrayList<>();
-		results.forEach(r -> followers.add(r.getFollower()));
+		results.forEach(r -> followers.add(r.getFollowers()));
 		return followers;
 	}
 

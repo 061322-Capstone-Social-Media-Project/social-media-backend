@@ -51,7 +51,7 @@ class FollowerServiceTests {
 		followers.add(new Follower(new FollowerKey(1, 3), u3, u1));
 		
 		List<User> expected = new ArrayList<>();
-		followers.forEach(f -> expected.add(f.getFollower()));
+		followers.forEach(f -> expected.add(f.getFollowers()));
 		
 		Mockito.when(fr.findFollowersByFollowing(u1, Pageable.unpaged())).thenReturn(new PageImpl<>(followers));
 		
