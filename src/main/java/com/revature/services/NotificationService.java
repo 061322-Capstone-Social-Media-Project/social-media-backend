@@ -107,7 +107,7 @@ public class NotificationService {
 	
 	public void commentNotification(Post post) {
 		List<Post> comments = post.getComments();
-		if (comments == null || comments.isEmpty()) {
+		if (!comments.isEmpty()) {
 			User u;
 			Post postCheck = pr.findPostById(post.getId());
 
