@@ -10,6 +10,7 @@ on:
       - pipeline-feature
       - feature-branch-follow
       - feature-branch-likes
+      - feature-branch-smells
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:

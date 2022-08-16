@@ -61,15 +61,15 @@ public class LikesController {
 	}
 	
 	@GetMapping("/user/{user_id}/post/{post_id}")
-	public ResponseEntity<Likes> findLikesByUserIdAndPostId(@PathVariable("user_id") int user_id,@PathVariable("post_id") int post_id) {
-		return ResponseEntity.ok(ls.findLikesByUserIdAndPostId(user_id, post_id));
+	public ResponseEntity<Likes> findLikesByUserIdAndPostId(@PathVariable("user_id") int userId,@PathVariable("post_id") int postId) {
+		return ResponseEntity.ok(ls.findLikesByUserIdAndPostId(userId, postId));
 	}
 	
 	@GetMapping("/count/post/{post_id}")
-	public ResponseEntity<Long> countLikes(@PathVariable("post_id") int post_id){
+	public ResponseEntity<Long> countLikes(@PathVariable("post_id") int postId){
 		
 		
-		return ResponseEntity.ok(ls.countLikesByPostId(post_id));
+		return ResponseEntity.ok(ls.countLikesByPostId(postId));
 		
 	}
 	

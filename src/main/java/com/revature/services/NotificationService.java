@@ -91,12 +91,11 @@ public class NotificationService {
 	}
 	
 	public Post findPostPrimary(int id) {
-		boolean post_check = true;
+		boolean postCheck = true;
 		 
-		while(post_check == true) {
+		while(postCheck) {
 			Post post = pr.findPostById(id);
 			if(post.getCommentsId() ==  null) {
-				post_check = false;
 				return post;
 			} else {
 				id= post.getCommentsId();
@@ -108,8 +107,8 @@ public class NotificationService {
 	
 	public void commentNotification(Post post) {
 		List<Post> comments = post.getComments();
-		if (comments.size() > 0) {
-			User u = new User();
+		if (comments.isEmpty()) {
+			User u;
 			Post postCheck = pr.findPostById(post.getId());
 
 			u = this.findcommentUser(post.getComments());

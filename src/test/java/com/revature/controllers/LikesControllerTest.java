@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(LikesController.class)
-public class LikesControllerTest {
+class LikesControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -28,7 +28,7 @@ public class LikesControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void findLikesByUserIdAndPostIdTest() throws Exception {
+    void findLikesByUserIdAndPostIdTest() throws Exception {
         Likes likeExpected = new Likes();
         likeExpected.setId(1);
         likeExpected.setPostId(1);
@@ -43,7 +43,7 @@ public class LikesControllerTest {
     }
 
     @Test
-    public void userLikesPostTest() throws Exception {
+    void userLikesPostTest() throws Exception {
         Likes likeExpected = new Likes();
         likeExpected.setId(1);
         likeExpected.setPostId(1);
@@ -61,7 +61,7 @@ public class LikesControllerTest {
     }
 
     @Test
-    public void deleteByIdExists() throws Exception {
+    void deleteByIdExists() throws Exception {
         mockMvc.perform(
                         delete("/likes/1"))
                 .andExpect(status().isOk());

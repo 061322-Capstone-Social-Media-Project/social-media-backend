@@ -1,12 +1,10 @@
 package com.revature.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.revature.models.Post;
-import com.revature.models.User;
 import com.revature.repositories.PostRepository;
 
 @Service
