@@ -81,7 +81,7 @@ public class NotificationService {
 	        	u =  comment.getAuthor();
 	        	break;
 	        } else {
-	        	if (comment.getComments().size() > 0) {
+	        	if (!comment.getComments().isEmpty()) {
 	        		u = findcommentUser(comment.getComments());
 	        	}
 	        }
@@ -107,12 +107,12 @@ public class NotificationService {
 	
 	public void commentNotification(Post post) {
 		List<Post> comments = post.getComments();
-		if (comments.isEmpty()) {
+		if (comments == null || comments.isEmpty()) {
 			User u;
 			Post postCheck = pr.findPostById(post.getId());
 
 			u = this.findcommentUser(post.getComments());
-			if(postCheck.getCommentsId() == null) {
+			if(postCheck == null || postCheck.getCommentsId() == null) {
 				Notification notification = new Notification();
  				notification.setNotificationBody(u.getFirstName() + " " + u.getLastName() + " commented on your Post!");
 				notification.setType(NotificationType.POST);
