@@ -179,17 +179,6 @@ public class NotificationServiceTests {
 	@Test
 	public void commentNotificationTest() {
 		User u = new User(1, "gian@gmail.com", "pass123", "Gianmarco", "Barone", null, null, null, null, null);
-
-//		List<Post> comments = new ArrayList<>();
-//
-//		Post comment = new Post(0, "test", "test", 5, null, u);
-//		Post comment1 = new Post(3, "test", "test", 5, null, u);
-//
-//		comments.add(comment);
-//		comments.add(comment1);
-
-//		Post postComment = new Post(0, "test", "test", 1, null, u);
-
 		Post postComment = new Post();
 		postComment.setAuthor(u);
 		postComment.setImageUrl("test");
@@ -215,6 +204,34 @@ public class NotificationServiceTests {
 		Mockito.when(nsService.makeNotification(nExpected)).thenReturn(nExpected);
 		nsService.commentNotification(postExpected);
 
+		User uSecond = new User(1, "gian@gmail.com", "pass123", "Gianmarco", "Barone", null, null, null, null, null);
+
+		List<Post> commentsSecond = new ArrayList<>();
+
+		Post commentSecond = new Post();
+		commentSecond.setAuthor(uSecond);
+		commentSecond.setImageUrl("test");
+		commentSecond.setText("test");
+		commentSecond.setCommentsId(4);
+		Post comment1Second = new Post(5, "test", "test", 2, null, uSecond);
+
+		commentsSecond.add(commentSecond);
+		commentsSecond.add(comment1Second);
+
+		Post postCommentSecond = new Post(4, "test", "test", 3, commentsSecond, uSecond);
+
+		List<Post> postCommentSeconds = new ArrayList<>();
+		postCommentSeconds.add(postCommentSecond);
+		Post postSubSecond = new Post(3, "test", "test", 1, postCommentSeconds, uSecond);
+		List<Post> postSecondSubs = new ArrayList<>();
+		postSecondSubs.add(postSubSecond);
+		Post postExpectedSecond = new Post(1, "test", "test", null, postSecondSubs, uSecond);
+
+		Mockito.when(postRepository.findPostById(3)).thenReturn(postSubSecond);
+		Mockito.when(postService.findPostPrimary(3)).thenReturn(postExpectedSecond);
+
+		Mockito.when(nsService.makeNotification(nExpected)).thenReturn(nExpected);
+		nsService.commentNotification(postSubSecond);
 	}
 
 }

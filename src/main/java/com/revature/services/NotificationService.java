@@ -85,6 +85,7 @@ public class NotificationService {
 
 			u = ps.findcommentUser(post.getComments());
 			if (postCheck.getCommentsId() == null) {
+				System.out.println("here");
 				Notification notification = new Notification();
 				notification.setNotificationBody(u.getFirstName() + " " + u.getLastName() + " commented on your Post!");
 				notification.setType(NotificationType.POST);
@@ -94,7 +95,6 @@ public class NotificationService {
 				notification.setTimeStamp(timestamp1);
 				this.makeNotification(notification);
 			} else {
-
 				Notification notification = new Notification();
 
 				notification

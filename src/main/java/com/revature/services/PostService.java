@@ -57,7 +57,11 @@ public class PostService {
 				post_check = false;
 				return post;
 			} else {
-				id = post.getCommentsId();
+				if (post.getCommentsId() != null) {
+					id = post.getCommentsId();
+				} else {
+					break;
+				}
 			}
 		}
 
