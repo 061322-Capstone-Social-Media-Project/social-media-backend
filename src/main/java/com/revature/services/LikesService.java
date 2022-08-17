@@ -1,5 +1,7 @@
 package com.revature.services;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.revature.exceptions.LikeNotFoundException;
@@ -21,12 +23,11 @@ public class LikesService {
 	}
 
 	public void removeLike(int id) throws LikeNotFoundException {
-		
-		try {
-			lr.deleteById(id);
-		} catch (Exception e) {
+		Optional<Likes> l = lr.findById(id);
+		if (l.isEmpty()) {
 			throw new LikeNotFoundException();
 		}
+		lr.deleteById(id);
 	}
 	
 	public Likes findLikesByUserIdAndPostId(int userId, int postId) {
@@ -37,8 +38,8 @@ public class LikesService {
 	public Likes findById(int id) {
 		return lr.findLikesById( id);
 	}
+
 	public long countLikesByPostId(int postId) {
-		
 		return lr.countLikesByPostId(postId);
 	}
 }

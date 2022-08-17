@@ -27,10 +27,9 @@ public class HobbyController {
 	}
 	
     @GetMapping
-    public Optional<Hobby> getAllHobbies(@RequestParam String id){
-    	int idNum = Integer.parseInt(id);
-		
-		return this.hobbyService.getByUserId(idNum);
+    public ResponseEntity<Hobby> getHobbies(@RequestParam int id){
+    	Optional<Hobby> h = hobbyService.getById(id);
+		return h.isPresent() ? ResponseEntity.ok(h.get()) : ResponseEntity.badRequest().build();
     }
 	
     @PutMapping
@@ -59,7 +58,7 @@ public class HobbyController {
     	h.setHobby3(hobby.getHobby3());
     	h.setUserId(hobby.getUserId());
     	
-    	hobbyService.upsert(h);
+    	h = hobbyService.upsert(h);
     	
     	return ResponseEntity.ok(h);
     }
