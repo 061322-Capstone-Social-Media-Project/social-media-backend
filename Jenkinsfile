@@ -20,14 +20,9 @@ pipeline {
                 sh 'docker rmi ${IMAGE_TAG} || true'
             }
         }
-        stage('maven package + junit') {
+        stage('maven package') {
             steps {
                 sh 'mvn -B -Dmaven.test.failure.ignore=true clean package -P prod'
-            }
-            post {
-                success {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                }
             }
         }
         stage('unpacking jar') {
