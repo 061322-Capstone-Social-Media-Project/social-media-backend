@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.revature.models.Post;
+import com.revature.models.User;
 import com.revature.repositories.PostRepository;
 
 @Service
@@ -17,19 +18,19 @@ public class PostService {
 	}
 
 	public List<Post> getAll() {
-		return this.postRepository.findAll();
+		return postRepository.findAll();
 	}
 
 	public Post upsert(Post post) {
-		return this.postRepository.save(post);
+		return postRepository.save(post);
 	}
 
 	public List<Post> getMainPosts() {
-		return this.postRepository.getMainPosts();
+		return postRepository.getMainPosts();
 	}
 
 	public Post findById(int id) {
-		return this.postRepository.findPostById(id);
+		return postRepository.findPostById(id);
 	}
 
 	public User findcommentUser(List<Post> comments) {
@@ -39,7 +40,7 @@ public class PostService {
 				u = comment.getAuthor();
 				break;
 			} else {
-				if (comment.getComments().size() > 0) {
+				if (!comment.getComments().isEmpty()) {
 					u = this.findcommentUser(comment.getComments());
 				}
 			}
@@ -48,22 +49,11 @@ public class PostService {
 	}
 
 	public Post findPostPrimary(int id) {
-		boolean post_check = true;
-
-		while (post_check == true) {
-			Post post = postRepository.findPostById(id);
-			if (post.getCommentsId() == null) {
-				post_check = false;
-				return post;
-			} else {
-				if (post.getCommentsId() != null) {
-					id = post.getCommentsId();
-				} else {
-					break;
-				}
-			}
+		Post post = postRepository.findPostById(id);
+		if (post.getCommentsId() == null) {
+			return post;
+		} else {
+			return findPostPrimary(post.getCommentsId());
 		}
-
-		return null;
 	}
 }

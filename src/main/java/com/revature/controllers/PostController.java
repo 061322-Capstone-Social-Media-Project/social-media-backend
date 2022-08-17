@@ -23,7 +23,7 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<List<Post>> getAllPosts() {
-    	return ResponseEntity.ok(this.postService.getMainPosts());
+    	return ResponseEntity.ok(postService.getMainPosts());
 
     }
 
@@ -31,12 +31,12 @@ public class PostController {
     @PutMapping
     public ResponseEntity<Post> upsertPost(@RequestBody Post post) {
     	 ns.commentNotification(post);
-     	 return ResponseEntity.ok(this.postService.upsert(post));
+     	 return ResponseEntity.ok(postService.upsert(post));
     }
 
 
     @GetMapping("/{id}")
     public ResponseEntity<Post> findById(@PathVariable("id") int id) {
-     	return ResponseEntity.ok(this.postService.findById(id));
+     	return ResponseEntity.ok(postService.findById(id));
     }
 }

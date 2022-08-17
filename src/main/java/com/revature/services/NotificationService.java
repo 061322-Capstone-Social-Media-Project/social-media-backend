@@ -61,7 +61,7 @@ public class NotificationService {
 
     }
 
-    public void likenotification(Likes likes) {
+    public void likeNotification(Likes likes) {
         Notification notification = new Notification();
         Post post = ps.findById(likes.getPostId());
         User u = ur.findUserById(likes.getUserId());
@@ -79,11 +79,10 @@ public class NotificationService {
     public void commentNotification(Post post) {
         List < Post > comments = post.getComments();
 
-        if (!comments.isEmpty()) {
-            User u = new User();
+        if (comments == null || !comments.isEmpty()) {
             Post postCheck = pr.findPostById(post.getId());
 
-            u = ps.findcommentUser(post.getComments());
+            User u = ps.findcommentUser(post.getComments());
             if (postCheck == null || postCheck.getCommentsId() == null) {
                 Notification notification = new Notification();
                 notification.setNotificationBody(u.getFirstName() + " " + u.getLastName() + " commented on your Post!");
