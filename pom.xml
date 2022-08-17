@@ -16,6 +16,7 @@
 		<java.version>11</java.version>
 		<sonar.organization>061322-capstone-social-media-project</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.exclusions>**/advice/**, **/exceptions/**</sonar.exclusions>
 	</properties>
 	<dependencies>
 		<dependency>
