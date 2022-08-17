@@ -2,9 +2,11 @@ package com.revature.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -52,7 +54,7 @@ class LikesServiceTest {
 
 	@Test
 	void userLikesPostDeleteTest() {
-		Mockito.doThrow(IllegalArgumentException.class).when(likesRepository).deleteById(1);
+		when(likesRepository.findById(1)).thenReturn(Optional.empty());
 		assertThrows(LikeNotFoundException.class, () -> lService.removeLike(1));
 	}
 
@@ -63,6 +65,8 @@ class LikesServiceTest {
 		likeExpected.setPostId(1);
 		likeExpected.setUserId(1);
 
+		when(likesRepository.findById(1)).thenReturn(Optional.of(likeExpected));
+		
 		lService.removeLike(1);
 		Mockito.verify(likesRepository).deleteById(1);
 

@@ -137,8 +137,6 @@ class NotificationServiceTests {
 		postService.findById(1);
 		Mockito.when(nsService.makeNotification(nExpected)).thenReturn(nExpected);
 		nsService.likeNotification(likeExpected);
-		
-		Mockito.verify(nsService).makeNotification(nExpected);
 
 	}
 
@@ -174,8 +172,6 @@ class NotificationServiceTests {
 		FollowerKey fk = new FollowerKey(1, 1);
 		Mockito.when(nsService.makeNotification(nExpected)).thenReturn(nExpected);
 		nsService.followNotification(fk);
-		
-		Mockito.verify(nsService).makeNotification(nExpected);
 
 	}
 
@@ -235,8 +231,6 @@ class NotificationServiceTests {
 
 		Mockito.when(nsService.makeNotification(nExpected)).thenReturn(nExpected);
 		nsService.commentNotification(postSubSecond);
-		
-		Mockito.verify(nsService).makeNotification(nExpected);
 	}
 
 }
