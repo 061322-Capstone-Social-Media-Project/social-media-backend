@@ -28,7 +28,7 @@ import com.revature.models.NotificationType;
 import com.revature.services.NotificationService;
 
 @WebMvcTest(NotificationController.class)
-public class NotificationControllerTest {
+class NotificationControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -39,7 +39,7 @@ public class NotificationControllerTest {
 	private ObjectMapper objectMapper;
 
 	@Test
-	public void makeNotificationTest() throws JsonProcessingException, Exception {
+	void makeNotificationTest() throws JsonProcessingException, Exception {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -57,7 +57,7 @@ public class NotificationControllerTest {
 	}
 
 	@Test
-	public void removeNotificationTest() throws Exception {
+	void removeNotificationTest() throws Exception {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -71,7 +71,7 @@ public class NotificationControllerTest {
 	}
 
 	@Test
-	public void updateNotificationTest() throws Exception {
+	void updateNotificationSuccess() throws Exception {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Optional<Notification> nExpected = Optional.ofNullable(
@@ -79,12 +79,35 @@ public class NotificationControllerTest {
 
 		when(ns.findANotificationByUserId(200)).thenReturn(nExpected);
 
-		mockMvc.perform(put("/notification").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(nExpected))).andExpect(status().isAccepted());
+		mockMvc.perform(
+				put("/notification")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(nExpected)))
+		.andExpect(status().isAccepted());
+	}
+	
+	@Test
+	void updateNotificationBadRequest() throws JsonProcessingException, Exception {
+		Notification nExpected = new Notification();
+		nExpected.setId(1);
+		nExpected.setType(NotificationType.POST);
+		nExpected.setStatus(NotificationStatus.UNREAD);
+		nExpected.setNotificationBody("test");
+		nExpected.setUserId(1);
+		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
+		nExpected.setTimeStamp(timestamp1);
+		
+		when(ns.findANotificationByUserId(1)).thenReturn(Optional.empty());
+		
+		mockMvc.perform(
+				put("/notification")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(nExpected)))
+		.andExpect(status().isBadRequest());
 	}
 
 	@Test
-	public void getNotificationsByUserIdTest() throws Exception {
+	void getNotificationsByUserIdTest() throws Exception {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();

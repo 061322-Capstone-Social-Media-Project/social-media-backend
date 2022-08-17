@@ -25,7 +25,7 @@ import com.revature.repositories.PostRepository;
 import com.revature.repositories.UserRepository;
 
 @SpringBootTest
-public class NotificationServiceTests {
+class NotificationServiceTests {
 
 	@MockBean
 	NotificationRepository nRepository;
@@ -46,7 +46,7 @@ public class NotificationServiceTests {
 	UserService userService;
 
 	@Test
-	public void makeNotificationTest() {
+	void makeNotificationTest() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -63,7 +63,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	public void findNotificationByUserIdTest() {
+	void findNotificationByUserIdTest() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -86,7 +86,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	public void deleteNotificationTest() {
+	void deleteNotificationTest() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -97,14 +97,14 @@ public class NotificationServiceTests {
 		nExpected.setUserId(1);
 		nExpected.setTimeStamp(timestamp1);
 
-		Mockito.doNothing().when(nRepository).deleteById(200);
-
 		nsService.deleteNotification(200);
+		
+		Mockito.verify(nRepository).deleteById(200);
 
 	}
 
 	@Test
-	public void likeNotificationTest() {
+	void likeNotificationTest() {
 		User u = new User();
 		u.setId(1);
 		u.setEmail("gian@gmail.com");
@@ -121,7 +121,6 @@ public class NotificationServiceTests {
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
 		likeExpected.setUserId(1);
-		likeExpected.setLiker(u);
 
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
@@ -137,12 +136,14 @@ public class NotificationServiceTests {
 
 		postService.findById(1);
 		Mockito.when(nsService.makeNotification(nExpected)).thenReturn(nExpected);
-		nsService.likenotification(likeExpected);
+		nsService.likeNotification(likeExpected);
+		
+		Mockito.verify(nsService).makeNotification(nExpected);
 
 	}
 
 	@Test
-	public void findANotificationByUserIdTest() {
+	void findANotificationByUserIdTest() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Optional<Notification> nExpected = Optional.ofNullable(
@@ -155,7 +156,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	public void followNotificationTest() {
+	void followNotificationTest() {
 		Optional<User> uExpected = Optional.ofNullable(
 				new User(1, "gian@gmail.com", "pass123", "Gianmarco", "Barone", null, null, null, null, null));
 		Mockito.when(userRepository.findById(1)).thenReturn(uExpected);
@@ -173,11 +174,13 @@ public class NotificationServiceTests {
 		FollowerKey fk = new FollowerKey(1, 1);
 		Mockito.when(nsService.makeNotification(nExpected)).thenReturn(nExpected);
 		nsService.followNotification(fk);
+		
+		Mockito.verify(nsService).makeNotification(nExpected);
 
 	}
 
 	@Test
-	public void commentNotificationTest() {
+	void commentNotificationTest() {
 		User u = new User(1, "gian@gmail.com", "pass123", "Gianmarco", "Barone", null, null, null, null, null);
 		Post postComment = new Post();
 		postComment.setAuthor(u);
@@ -232,6 +235,8 @@ public class NotificationServiceTests {
 
 		Mockito.when(nsService.makeNotification(nExpected)).thenReturn(nExpected);
 		nsService.commentNotification(postSubSecond);
+		
+		Mockito.verify(nsService).makeNotification(nExpected);
 	}
 
 }
