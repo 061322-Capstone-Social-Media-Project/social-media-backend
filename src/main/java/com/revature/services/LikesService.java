@@ -21,24 +21,23 @@ public class LikesService {
 	}
 
 	public void removeLike(int id) throws LikeNotFoundException {
-		
 		try {
 			lr.deleteById(id);
 		} catch (Exception e) {
 			throw new LikeNotFoundException();
 		}
 	}
-	
+
 	public Likes findLikesByUserIdAndPostId(int userId, int postId) {
 		return lr.findLikesByUserIdAndPostId(userId, postId);
 	}
 
-	
 	public Likes findById(int id) {
-		return lr.findLikesById( id);
+		return lr.findLikesById(id);
 	}
+
 	public long countLikesByPostId(int postId) {
-		
+
 		return lr.countLikesByPostId(postId);
 	}
 }

@@ -86,7 +86,7 @@ class NotificationServiceTests {
 	}
 
 	@Test
-	void deleteNotificationSuccess() {
+	void removeNotificationSuccess() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -104,7 +104,7 @@ class NotificationServiceTests {
 	}
 
 	@Test
-	void likeNotificationSuccess() {
+	void addLikeNotificationSuccess() {
 		User u = new User();
 		u.setId(1);
 		u.setEmail("gian@gmail.com");
@@ -154,7 +154,7 @@ class NotificationServiceTests {
 	}
 
 	@Test
-	void followNotificationSuccess() {
+	void addFollowNotificationSuccess() {
 		Optional<User> uExpected = Optional.ofNullable(
 				new User(1, "gian@gmail.com", "pass123", "Gianmarco", "Barone", null, null, null, null, null));
 		Mockito.when(userRepository.findById(1)).thenReturn(uExpected);
@@ -176,7 +176,7 @@ class NotificationServiceTests {
 	}
 
 	@Test
-	void commentNotificationSuccess() {
+	void addCommentNotificationSuccess() {
 		User u = new User(1, "gian@gmail.com", "pass123", "Gianmarco", "Barone", null, null, null, null, null);
 		Post postComment = new Post();
 		postComment.setAuthor(u);

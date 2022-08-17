@@ -28,7 +28,7 @@ import com.revature.models.NotificationType;
 import com.revature.services.NotificationService;
 
 @WebMvcTest(NotificationController.class)
-public class NotificationControllerTest {
+class NotificationControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 

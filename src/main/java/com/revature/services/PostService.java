@@ -50,21 +50,11 @@ public class PostService {
 	}
 
 	public Post findPostPrimary(int id) {
-		boolean post_check = true;
-
-		while (post_check) {
-			Post post = postRepository.findPostById(id);
-			if (post.getCommentsId() == null) {
-				return post;
-			} else {
-				if (post.getCommentsId() != null) {
-					id = post.getCommentsId();
-				} else {
-					break;
-				}
-			}
+		Post post = this.postRepository.findPostById(id);
+		if (post.getCommentsId() == null) {
+			return post;
+		} else {
+			return findPostPrimary(post.getCommentsId());
 		}
-
-		return null;
 	}
 }
