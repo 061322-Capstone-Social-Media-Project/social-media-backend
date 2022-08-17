@@ -26,7 +26,7 @@ class LikesServiceTest {
 	private LikesService lService;
 
 	@Test
-	void findLikesByUserIdAndPostIdTest() {
+	void findLikesSuccess() {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
@@ -39,7 +39,7 @@ class LikesServiceTest {
 	}
 
 	@Test
-	void userLikesPostTest() {
+	void addLikesSuccess() {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
@@ -51,13 +51,13 @@ class LikesServiceTest {
 	}
 
 	@Test
-	void userLikesPostDeleteTest() {
+	void removeLikesSuccess() {
 		Mockito.doThrow(IllegalArgumentException.class).when(likesRepository).deleteById(1);
 		assertThrows(LikeNotFoundException.class, () -> lService.removeLike(1));
 	}
 
 	@Test
-	void userLikesPostDeleteExist() throws LikeNotFoundException {
+	void removeLikesExist() throws LikeNotFoundException {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
@@ -69,7 +69,7 @@ class LikesServiceTest {
 	}
 
 	@Test
-	void findLikesByIdTest() {
+	void findLikesByIdSuccess() {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
@@ -82,7 +82,7 @@ class LikesServiceTest {
 	}
 
 	@Test
-	void countLikesByPostIdTest() {
+	void countLikesByPostIdSuccess() {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);

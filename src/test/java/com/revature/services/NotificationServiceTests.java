@@ -25,7 +25,7 @@ import com.revature.repositories.PostRepository;
 import com.revature.repositories.UserRepository;
 
 @SpringBootTest
-public class NotificationServiceTests {
+class NotificationServiceTests {
 
 	@MockBean
 	NotificationRepository nRepository;
@@ -46,7 +46,7 @@ public class NotificationServiceTests {
 	UserService userService;
 
 	@Test
-	void makeNotificationTest() {
+	void addNotificationSuccess() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -63,7 +63,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	void findNotificationByUserIdTest() {
+	void findNotificationByUserIdExists() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -86,7 +86,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	void deleteNotificationTest() {
+	void deleteNotificationSuccess() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -104,7 +104,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	void likeNotificationTest() {
+	void likeNotificationSuccess() {
 		User u = new User();
 		u.setId(1);
 		u.setEmail("gian@gmail.com");
@@ -141,7 +141,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	void findANotificationByUserIdTest() {
+	void findANotificationByUserIdExists() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Optional<Notification> nExpected = Optional.ofNullable(
@@ -154,7 +154,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	void followNotificationTest() {
+	void followNotificationSuccess() {
 		Optional<User> uExpected = Optional.ofNullable(
 				new User(1, "gian@gmail.com", "pass123", "Gianmarco", "Barone", null, null, null, null, null));
 		Mockito.when(userRepository.findById(1)).thenReturn(uExpected);
@@ -176,7 +176,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	void commentNotificationTest() {
+	void commentNotificationSuccess() {
 		User u = new User(1, "gian@gmail.com", "pass123", "Gianmarco", "Barone", null, null, null, null, null);
 		Post postComment = new Post();
 		postComment.setAuthor(u);

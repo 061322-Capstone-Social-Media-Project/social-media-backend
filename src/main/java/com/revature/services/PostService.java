@@ -40,21 +40,21 @@ public class PostService {
 				u = comment.getAuthor();
 				break;
 			} else {
-				if (comment.getComments().size() > 0) {
-					u = this.findcommentUser(comment.getComments());
+				if (!comment.getComments().isEmpty()) {
+					u = findcommentUser(comment.getComments());
 				}
 			}
 		}
 		return u;
+
 	}
 
 	public Post findPostPrimary(int id) {
 		boolean post_check = true;
 
-		while (post_check == true) {
+		while (post_check) {
 			Post post = postRepository.findPostById(id);
 			if (post.getCommentsId() == null) {
-				post_check = false;
 				return post;
 			} else {
 				if (post.getCommentsId() != null) {
