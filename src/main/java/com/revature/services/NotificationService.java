@@ -77,10 +77,9 @@ public class NotificationService {
 		List<Post> comments = post.getComments();
 
 		if (!comments.isEmpty()) {
-			User u = new User();
 			Post postCheck = pr.findPostById(post.getId());
 
-			u = ps.findcommentUser(post.getComments());
+			User u = ps.findcommentUser(post.getComments());
 			if (postCheck == null || postCheck.getCommentsId() == null) {
 				Notification notification = new Notification();
 				notification.setNotificationBody(u.getFirstName() + " " + u.getLastName() + " commented on your Post!");
