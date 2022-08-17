@@ -39,7 +39,7 @@ public class NotificationControllerTest {
 	private ObjectMapper objectMapper;
 
 	@Test
-	public void makeNotificationTest() throws JsonProcessingException, Exception {
+	void makeNotificationTest() throws JsonProcessingException, Exception {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -57,7 +57,7 @@ public class NotificationControllerTest {
 	}
 
 	@Test
-	public void removeNotificationTest() throws Exception {
+	void removeNotificationTest() throws Exception {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -71,7 +71,7 @@ public class NotificationControllerTest {
 	}
 
 	@Test
-	public void updateNotificationTest() throws Exception {
+	void updateNotificationTest() throws Exception {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Optional<Notification> nExpected = Optional.ofNullable(
@@ -84,7 +84,7 @@ public class NotificationControllerTest {
 	}
 
 	@Test
-	public void getNotificationsByUserIdTest() throws Exception {
+	void getNotificationsByUserIdTest() throws Exception {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();

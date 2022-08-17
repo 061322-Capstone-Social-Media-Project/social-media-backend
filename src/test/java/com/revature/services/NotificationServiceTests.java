@@ -46,7 +46,7 @@ public class NotificationServiceTests {
 	UserService userService;
 
 	@Test
-	public void makeNotificationTest() {
+	void makeNotificationTest() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -63,7 +63,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	public void findNotificationByUserIdTest() {
+	void findNotificationByUserIdTest() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -86,7 +86,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	public void deleteNotificationTest() {
+	void deleteNotificationTest() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -104,7 +104,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	public void likeNotificationTest() {
+	void likeNotificationTest() {
 		User u = new User();
 		u.setId(1);
 		u.setEmail("gian@gmail.com");
@@ -121,7 +121,6 @@ public class NotificationServiceTests {
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
 		likeExpected.setUserId(1);
-		likeExpected.setLiker(u);
 
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
@@ -142,7 +141,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	public void findANotificationByUserIdTest() {
+	void findANotificationByUserIdTest() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Optional<Notification> nExpected = Optional.ofNullable(
@@ -155,7 +154,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	public void followNotificationTest() {
+	void followNotificationTest() {
 		Optional<User> uExpected = Optional.ofNullable(
 				new User(1, "gian@gmail.com", "pass123", "Gianmarco", "Barone", null, null, null, null, null));
 		Mockito.when(userRepository.findById(1)).thenReturn(uExpected);
@@ -177,7 +176,7 @@ public class NotificationServiceTests {
 	}
 
 	@Test
-	public void commentNotificationTest() {
+	void commentNotificationTest() {
 		User u = new User(1, "gian@gmail.com", "pass123", "Gianmarco", "Barone", null, null, null, null, null);
 		Post postComment = new Post();
 		postComment.setAuthor(u);

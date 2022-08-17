@@ -82,7 +82,7 @@ class LikesServiceTest {
 	}
 
 	@Test
-	public void countLikesByPostIdTest() {
+	void countLikesByPostIdTest() {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
