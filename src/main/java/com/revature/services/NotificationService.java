@@ -38,9 +38,7 @@ public class NotificationService {
     }
 
     public Notification makeNotification(Notification notification) {
-
         return nr.save(notification);
-
     }
 
     public void deleteNotification(int id) {
@@ -48,7 +46,6 @@ public class NotificationService {
     }
 
     public List < Notification > findNotificationByUserId(int id) {
-
         List < NotificationStatus > status = new ArrayList < > ();
         status.add(NotificationStatus.READ);
         status.add(NotificationStatus.UNREAD);
@@ -56,9 +53,7 @@ public class NotificationService {
     }
 
     public Optional < Notification > findANotificationByUserId(int id) {
-
         return nr.findById(id);
-
     }
 
     public void likeNotification(Likes likes) {
