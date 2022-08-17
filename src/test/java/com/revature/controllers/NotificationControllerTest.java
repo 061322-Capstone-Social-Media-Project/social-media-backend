@@ -71,7 +71,7 @@ class NotificationControllerTest {
 	}
 
 	@Test
-	void updateNotificationTest() throws Exception {
+	void updateNotificationSuccess() throws Exception {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Optional<Notification> nExpected = Optional.ofNullable(
@@ -79,8 +79,31 @@ class NotificationControllerTest {
 
 		when(ns.findANotificationByUserId(200)).thenReturn(nExpected);
 
-		mockMvc.perform(put("/notification").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(nExpected))).andExpect(status().isAccepted());
+		mockMvc.perform(
+				put("/notification")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(nExpected)))
+		.andExpect(status().isAccepted());
+	}
+	
+	@Test
+	void updateNotificationBadRequest() throws JsonProcessingException, Exception {
+		Notification nExpected = new Notification();
+		nExpected.setId(1);
+		nExpected.setType(NotificationType.POST);
+		nExpected.setStatus(NotificationStatus.UNREAD);
+		nExpected.setNotificationBody("test");
+		nExpected.setUserId(1);
+		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
+		nExpected.setTimeStamp(timestamp1);
+		
+		when(ns.findANotificationByUserId(1)).thenReturn(Optional.empty());
+		
+		mockMvc.perform(
+				put("/notification")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(nExpected)))
+		.andExpect(status().isBadRequest());
 	}
 
 	@Test

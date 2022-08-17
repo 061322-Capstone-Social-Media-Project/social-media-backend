@@ -1,7 +1,5 @@
 package com.revature.controllers;
 
-import java.sql.Timestamp;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,20 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.exceptions.LikeNotFoundException;
 import com.revature.models.Likes;
-import com.revature.models.Notification;
-import com.revature.models.NotificationType;
-import com.revature.models.Post;
 import com.revature.services.LikesService;
 import com.revature.services.NotificationService;
-import com.revature.services.PostService;
 
 @RestController
 @RequestMapping("/likes")
 public class LikesController {
-	
+
 	private final LikesService ls;
 	private final NotificationService ns;
-
 
 	public LikesController(LikesService ls, NotificationService ns) {
 		super();
@@ -36,22 +29,17 @@ public class LikesController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Likes> userLikesPost(@RequestBody Likes likes){
+	public ResponseEntity<Likes> userLikesPost(@RequestBody Likes likes) {
 		Likes checkLikes = ls.findLikesByUserIdAndPostId(likes.getUserId(), likes.getPostId());
-		
-		
-		ns.likenotification(likes);
-		
-		
 
-		
-		return (checkLikes != null) ? 
-				ResponseEntity.status(HttpStatus.BAD_REQUEST).body(likes):
-					ResponseEntity.ok(this.ls.userLikesPost(likes));
+		ns.likeNotification(likes);
+
+		return (checkLikes != null) ? ResponseEntity.status(HttpStatus.BAD_REQUEST).body(likes)
+				: ResponseEntity.ok(this.ls.userLikesPost(likes));
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public  ResponseEntity<Boolean> removeLike(@PathVariable("id") int id){
+	public ResponseEntity<Boolean> removeLike(@PathVariable("id") int id) {
 		try {
 			ls.removeLike(id);
 		} catch (LikeNotFoundException e) {
@@ -59,18 +47,18 @@ public class LikesController {
 		}
 		return ResponseEntity.ok().build();
 	}
-	
+
 	@GetMapping("/user/{user_id}/post/{post_id}")
-	public ResponseEntity<Likes> findLikesByUserIdAndPostId(@PathVariable("user_id") int userId,@PathVariable("post_id") int postId) {
+	public ResponseEntity<Likes> findLikesByUserIdAndPostId(@PathVariable("user_id") int userId,
+			@PathVariable("post_id") int postId) {
 		return ResponseEntity.ok(ls.findLikesByUserIdAndPostId(userId, postId));
 	}
-	
+
 	@GetMapping("/count/post/{post_id}")
-	public ResponseEntity<Long> countLikes(@PathVariable("post_id") int postId){
-		
-		
+	public ResponseEntity<Long> countLikes(@PathVariable("post_id") int postId) {
+
 		return ResponseEntity.ok(ls.countLikesByPostId(postId));
-		
+
 	}
-	
+
 }

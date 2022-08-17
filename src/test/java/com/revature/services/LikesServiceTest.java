@@ -2,9 +2,11 @@ package com.revature.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -26,7 +28,7 @@ class LikesServiceTest {
 	private LikesService lService;
 
 	@Test
-	void findLikesSuccess() {
+	void findLikesByUserIdAndPostIdTest() {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
@@ -39,7 +41,7 @@ class LikesServiceTest {
 	}
 
 	@Test
-	void addLikesSuccess() {
+	void userLikesPostTest() {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
@@ -51,25 +53,27 @@ class LikesServiceTest {
 	}
 
 	@Test
-	void removeLikesSuccess() {
-		Mockito.doThrow(IllegalArgumentException.class).when(likesRepository).deleteById(1);
+	void userLikesPostDeleteTest() {
+		when(likesRepository.findById(1)).thenReturn(Optional.empty());
 		assertThrows(LikeNotFoundException.class, () -> lService.removeLike(1));
 	}
 
 	@Test
-	void removeLikesExist() throws LikeNotFoundException {
+	void userLikesPostDeleteExist() throws LikeNotFoundException {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
 		likeExpected.setUserId(1);
 
+		when(likesRepository.findById(1)).thenReturn(Optional.of(likeExpected));
+		
 		lService.removeLike(1);
 		Mockito.verify(likesRepository).deleteById(1);
 
 	}
 
 	@Test
-	void findLikesByIdSuccess() {
+	void findLikesByIdTest() {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);
@@ -82,7 +86,7 @@ class LikesServiceTest {
 	}
 
 	@Test
-	void countLikesByPostIdSuccess() {
+	public void countLikesByPostIdTest() {
 		Likes likeExpected = new Likes();
 		likeExpected.setId(1);
 		likeExpected.setPostId(1);

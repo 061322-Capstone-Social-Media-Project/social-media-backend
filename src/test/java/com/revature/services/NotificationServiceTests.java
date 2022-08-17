@@ -46,7 +46,7 @@ class NotificationServiceTests {
 	UserService userService;
 
 	@Test
-	void addNotificationSuccess() {
+	void makeNotificationTest() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -63,7 +63,7 @@ class NotificationServiceTests {
 	}
 
 	@Test
-	void findNotificationByUserIdExists() {
+	void findNotificationByUserIdTest() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -86,7 +86,7 @@ class NotificationServiceTests {
 	}
 
 	@Test
-	void removeNotificationSuccess() {
+	void deleteNotificationTest() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Notification nExpected = new Notification();
@@ -97,14 +97,14 @@ class NotificationServiceTests {
 		nExpected.setUserId(1);
 		nExpected.setTimeStamp(timestamp1);
 
-		Mockito.doNothing().when(nRepository).deleteById(200);
-
 		nsService.deleteNotification(200);
+		
+		Mockito.verify(nRepository).deleteById(200);
 
 	}
 
 	@Test
-	void addLikeNotificationSuccess() {
+	void likeNotificationTest() {
 		User u = new User();
 		u.setId(1);
 		u.setEmail("gian@gmail.com");
@@ -136,12 +136,12 @@ class NotificationServiceTests {
 
 		postService.findById(1);
 		Mockito.when(nsService.makeNotification(nExpected)).thenReturn(nExpected);
-		nsService.likenotification(likeExpected);
+		nsService.likeNotification(likeExpected);
 
 	}
 
 	@Test
-	void findANotificationByUserIdExists() {
+	void findANotificationByUserIdTest() {
 		Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
 		Optional<Notification> nExpected = Optional.ofNullable(
@@ -154,7 +154,7 @@ class NotificationServiceTests {
 	}
 
 	@Test
-	void addFollowNotificationSuccess() {
+	void followNotificationTest() {
 		Optional<User> uExpected = Optional.ofNullable(
 				new User(1, "gian@gmail.com", "pass123", "Gianmarco", "Barone", null, null, null, null, null));
 		Mockito.when(userRepository.findById(1)).thenReturn(uExpected);
@@ -176,7 +176,7 @@ class NotificationServiceTests {
 	}
 
 	@Test
-	void addCommentNotificationSuccess() {
+	void commentNotificationTest() {
 		User u = new User(1, "gian@gmail.com", "pass123", "Gianmarco", "Barone", null, null, null, null, null);
 		Post postComment = new Post();
 		postComment.setAuthor(u);
