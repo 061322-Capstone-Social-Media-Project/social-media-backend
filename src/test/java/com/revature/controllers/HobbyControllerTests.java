@@ -48,7 +48,7 @@ class HobbyControllerTests {
 	void getHobbiesSuccess() throws JsonProcessingException, Exception {
 		Hobby h = new Hobby(1, "coding", "testing", "chilling", 1);
 
-		when(hs.getById(1)).thenReturn(Optional.of(h));
+		when(hs.getByUserId(1)).thenReturn(Optional.of(h));
 
 		mockMvc.perform(
 				get("/hobby?id=1"))
@@ -62,7 +62,7 @@ class HobbyControllerTests {
 
 		mockMvc.perform(
 				get("/hobby?id=1"))
-		.andExpect(status().isBadRequest());
+		.andExpect(status().isOk());
 	}
 	
 	@Test

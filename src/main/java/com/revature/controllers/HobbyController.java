@@ -28,8 +28,8 @@ public class HobbyController {
 	
     @GetMapping
     public ResponseEntity<Hobby> getHobbies(@RequestParam int id){
-    	Optional<Hobby> h = hobbyService.getById(id);
-		return h.isPresent() ? ResponseEntity.ok(h.get()) : ResponseEntity.badRequest().build();
+    	Optional<Hobby> h = hobbyService.getByUserId(id);
+		return h.isPresent() ? ResponseEntity.ok(h.get()) : ResponseEntity.ok().build();
     }
 	
     @PutMapping
