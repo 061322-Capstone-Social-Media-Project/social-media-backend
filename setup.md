@@ -96,7 +96,7 @@ details.
     sudo systemctl enable docker
     ```
 
-5. Reload system daemon.
+5. Restart Docker service.
     ```console
     sudo service docker restart
     ```
