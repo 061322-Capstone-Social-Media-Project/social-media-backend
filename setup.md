@@ -118,8 +118,7 @@ details.
 ## Jenkins Setup
 
 You can follow [this](https://github.com/061322-VA-JavaMSA/notes/blob/main/week4/jenkins-ec2.txt) guide to finish
-setting up jenkins.
-Everything after line 31 of the above text document is relevant. Line 1-4 is also handy.
+setting up jenkins. Everything after line 31 of text document is relevant. Line 1-4 is also handy.
 
 ### Note
 
@@ -130,4 +129,5 @@ Everything after line 31 of the above text document is relevant. Line 1-4 is als
 - To simplify the deployment we used two Jenkins jobs. One for the backend and another for the frontend.
 - The only difference between both jobs besides the plugin mentioned above is the GitHub repository they are pointing
   too and the webhook.
-- The external Jenkins link above also goes over how to set up an AWS EC2 instance.
+- This [guide](https://www.jenkins.io/doc/tutorials/tutorial-for-installing-jenkins-on-AWS/) also goes over how to set
+  up an AWS EC2 instance.
