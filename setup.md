@@ -126,6 +126,7 @@ setting up jenkins. Everything after line 31 of text document is relevant. Line 
 - The **NodeJS Plugin** is required when setting up the frontend.
     - Under **Manage Jenkins** &rarr; **Global Tool Configuration**
         - Set up the nodejs global tool with ```npm install @angular/cli@~14.0.6 typescript@~4.7.2```
+        - you can also configure your **Maven** tool here or install **Maven** directly on the ec2 instance.
 - To simplify the deployment we used two Jenkins jobs. One for the backend and another for the frontend.
 - The only difference between both jobs besides the plugin mentioned above is the GitHub repository they are pointing
   too and the webhook.
